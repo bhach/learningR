@@ -14,4 +14,6 @@ Estimate = xbar + c(-ME, ME)
 Estimate
 
 #Simple Approach#
+#Install TeachingDemos package#
+?z.test
 
