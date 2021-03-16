@@ -11,4 +11,9 @@
 
 Now enjoy connected to Git all the time and do push and pull
 
+Clone a existing repo
+#Create a directory
+#Enter in Terminal "git clone clone_url"
+
+
 
