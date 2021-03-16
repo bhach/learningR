@@ -1,0 +1,24 @@
+#Unix Commands that needs to be run on R Terminal
+ls()   #list directory content
+mkdir Uber   #Uber is the new directory name that we are making with mkdir
+mkdir Uber Ola   #Multiple directories
+rmdir Uber   #Removing the directory and it will be removed only if no contents are there
+cd Ola   #changing working directory to ola
+pwd   #current working directory
+rm -r folder_name  #remove dir that is not empty, "r" stands for recursive
+
+
+../ # two dots represents parent dir
+./ # single dot represents current workingdir 
+~/  #home directory
+cd ~/projects # concatenate with forward slashes
+cd ../.. # change to two parent layer beyond
+cd -  # whatever dir you were before
+cd  # return to the home dir
+
+#Moving Files from one directory to other
+mv Old_Path New_Path
+rm filename-1 filename-2 filename-3
+cp commans copy files from one directory to other
+
+
