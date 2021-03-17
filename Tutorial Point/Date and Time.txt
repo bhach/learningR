@@ -1,19 +1,98 @@
 Date and Time:
 ==============
---> R is able to access the current date, time and time zone
---> Sys.time and Sys.Date functions are used to get current data and time.
-Sys.Date()
-Sys.time()
-Sys.timezone()
 
+
+Sys.Date()          #current date
+Sys.time()          #current rime
+Sys.timezone()      #system timezone
+
+Anything in between " " is sting only but since we are as.date, the class is Date
 x <- as.Date("2018-10-12")
-print(x)
-typeof(x)	# double
-class(x)	# Date
+y<- "2018-10-12"
+#observe the class and type of x and y.
+
+
 as.Date(c('2018-10-11', '2018-10-12'))
+
 a <- Sys.Date()
 b <- Sys.time()
 typeof(a)	# "double"
 typeof(b)	# "double"
 class(a)	# "Date"
 class(b)	# "POSIXct" "POSIXIt"
+
+
+
+
+DateTimeClasses:
+----------------
+--> DateTimeClasses function description of the classes "POSIXlt" and "POSIXct" representing calendar dates and times.
+--> To format Dates we use the format(date, format="%Y-%m-%d") function with either the POSIXct (given from as.POSIXct()) or POSIXlt (given from as.POSIXlt())
+--> Codes for specifying the formats to the as.Date() function.
+
+Format   Code_Meaning
+------   -----------
+  %d 	  day
+  %m 	  month
+  %y 	  year in 2-digits
+  %Y 	  year in 4-digits
+  %b 	  abbreviated month in 3 chars
+  %B 	  full name of the month
+
+# It tries to interprets the string as %Y-%m-%d
+as.Date("2018-10-15")	# no problem
+as.Date("2018/10/15")	# no problem
+as.Date("   2018-10-15 datahills") # leading whitespace and all trailing characters are ignored
+as.Date("15-10-2018")	#interprets as "%Y-%m-%d"
+as.Date("15/10/2018")	#again interprets as "%Y-%m-%d"
+
+as.Date("2018-10-15", format = "%Y-%m-%d")
+as.Date("2018-10-15") # in ISO format, so does not require formatting string
+as.Date("10/15/18", format = "%m/%d/%y")
+as.Date("October 15, 2018", "%B %d, %Y")
+as.Date("October 15th, 2018", "%B %dth, %Y") # add separators and literals to format
+as.Date("15-10-2018",format="%d-%m-%Y")
+as.Date("15-10-2018", "%d-%m-%Y")
+as.Date("15 Oct, 2018","%d %b, %Y")
+as.Date("15Oct2018","%d%b%Y")
+as.Date("15 October, 2018", "%d %B, %Y")
+
+Formatting and printing date-time objects:
+------------------------------------------
+# test date-time object
+d = as.POSIXct("2018-10-15 06:30:10.10", tz = "UTC")
+format(d,"%S") 		# 00-61 Second as integer
+format(d,"%OS") 	# 00-60.99? Second as fractional
+format(d,"%M") 		# 00-59 Minute
+format(d,"%H") 		# 00-23 Hours
+format(d,"%I") 		# 01-12 Hours
+format(d,"%p") 		# AM/PM Indicator
+format(d,"%Z") 		# Time Zone Abbreviation
+
+# To add/subtract time, use POSIXct, since it stores times in seconds
+as.POSIXct("2018-10-15")
+# adding/subtracting times - 60 seconds
+as.POSIXct("2018-10-15") + 60	
+# adding 5 hours, 30 minutes, 10 seconds
+as.POSIXct("2018-10-14") + ( (5 * 60 * 60) + (30 * 60) + 10)
+
+# as.difftime can be used to add time periods to a date.
+as.POSIXct("2018-10-14") +
+	as.difftime(5, units="hours") +
+	as.difftime(30, units="mins") +
+	as.difftime(10, units="secs")
+# To find the difference between dates/times use difftime() for differences in seconds, minutes, hours, days or weeks.
+# using POSIXct objects
+difftime(
+	as.POSIXct("2018-10-14 12:00:00"),
+	as.POSIXct("2018-10-14 11:59:50"),
+	unit = "secs")
+
+as.POSIXct("07:30", format = "%H:%M") # time, formatting string
+strptime("07:30", format = "%H:%M") # identical, but makes a POSIXlt object
+as.POSIXct("07 AM", format = "%I %p")
+as.POSIXct("07:30:10", 
+	format = "%H:%M:%S",
+	tz = "Asia/Calcutta") # time string without timezone & set time zone
+as.POSIXct("2018-10-15 07:30:10",
+	format = "%F %T") # shortcut tokens for "%Y-%m-%d" and "%H:%M:%S"
