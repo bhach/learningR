@@ -129,8 +129,6 @@ However, here is an example where they will return DIFFERENT results:
 stTime <- ymd_hms("2020-03-07 12:00:00", tz = "America/New_York")
 stTime + ddays(1)
 stTime + days(1)
-```
 
 Note that R is very sensitive to Daylight Savings Time.  The duration function `ddays()` added the number of seconds in a typical day to the original date.  However, March 7, 2020 only had 23 hours due to the presence of Daylight Savings Time.   The difference with the period function `days()` is that it added the natural human day -- which, when we think of a day, will be the same hour of the following day despite Daylight Savings Time.
 
-Intervals also come with a variety of helper functions like `int_start()`, `int_end()`, `int_flip()`, `int_shift()`, `int_overlaps()`, `int_standardize()`, `int_aligns()`, and `int_diff()`.  These can be accessed through the help documentation and are fairly intuitive.
