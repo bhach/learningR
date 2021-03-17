@@ -92,7 +92,42 @@ str_split(email,pattern)
 str_split(email,pattern,simplify=T)
 
 
+Next, we are going to use the built-in `words` vector to create a data frame and illustrate regular expression functionalities.   We have already utilized exact matches.    Here are some other options:
 
+* `\d`: matches any digit
+* `\s`: matches any whitespace
+* `[abc]`: matches a, b, or c
+* `[^abc]`: matches anything except a, b, or c
+* `[a|b]`: matches a or b
+
+words<-"Hi, everyone. We are learning regex functions in stringr package."
+Install.packages("tidyverse")
+df <- tibble(word = words)
+
+
+Use str_count() to get regular expression matches
+a<-df %>%
+  mutate(
+    vowels = str_count(word, "[aeiou]"),
+    consonants = str_count(word, "[^aeiou]"),
+    a_or_c = str_count(word, "[a|c]")
+  )
+class(a)
+
+
+Return words that start with "y"}
+df %>%
+  dplyr::filter(str_detect(words, "^y"))
+  
+
+Return words that start with vowels
+df %>%
+  dplyr::filter(str_detect(word, "^[aeiou]"))
+  
+  
+Return words that do not contain vowels
+df %>%
+  dplyr::filter(!str_detect(word, "[aeiou]"))
 
 
 
