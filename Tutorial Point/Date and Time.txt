@@ -1,0 +1,19 @@
+Date and Time:
+==============
+--> R is able to access the current date, time and time zone
+--> Sys.time and Sys.Date functions are used to get current data and time.
+Sys.Date()
+Sys.time()
+Sys.timezone()
+
+x <- as.Date("2018-10-12")
+print(x)
+typeof(x)	# double
+class(x)	# Date
+as.Date(c('2018-10-11', '2018-10-12'))
+a <- Sys.Date()
+b <- Sys.time()
+typeof(a)	# "double"
+typeof(b)	# "double"
+class(a)	# "Date"
+class(b)	# "POSIXct" "POSIXIt"

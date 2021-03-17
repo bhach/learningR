@@ -1,5 +1,5 @@
-How to Import Individual data file from github:
-===============================================
+How to Import Individual data file from github/URL:
+==================================================
 #Go to the file and click raw
 #Copy the url
 #Install and load downloader package
@@ -29,7 +29,7 @@ dat <- read.csv(filename)
 How to Clone Complete Repository from GitHub:
 =============================================
 1. Create a directory
-2. Enter in Terminal "git clone clone "url"
+2. Enter in Terminal "git clone "url"
 3. in place of url, add the github SSH code
 
 

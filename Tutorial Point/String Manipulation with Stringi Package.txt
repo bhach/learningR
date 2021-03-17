@@ -26,6 +26,7 @@ data <- "Welcome to DataHills. " %s+%
         "We provide services across India."
 
 
+
 stri_split_boundaries():
 ========================
 It is used to extract words.
@@ -95,7 +96,8 @@ stri_replace_all:
 =================
 It replaces a word with another word based on conditions
 
---> vectorize_all parameter, which defaults to TRUE
+vectorize_all parameter, which defaults to TRUE
+
 stri_replace_all_fixed(data, " ", "#")
 stri_replace_all_fixed(data, "a", "A")
 stri_replace_all_fixed(data,c("DataHills","provides"), c("Information","offers"), vectorize_all=FALSE)
@@ -105,3 +107,53 @@ stri_replace_all_fixed(data,c("Data","provides"), c("Information","offers"), vec
 stri_replace_all_fixed(data,c("Data","provides"), c("Information","offers"), vectorize_all=TRUE)
 stri_replace_all_fixed(data,c("Data","provides"), c("Information","offers"), vectorize_all=FALSE)
 stri_replace_all_regex(data,"\\b"%s+%c("Data","provides")%s+%"\\b", c("Information","offers"),vectorize_all=FALSE)
+
+
+
+stri_split:
+===========
+It is used to split sentences based on ; , _ or any other metric.
+
+stri_split_fixed(data, " ")
+stri_split_fixed("a_b_c_d", "_")
+stri_split_fixed("a_b_c__d", "_")
+stri_split_fixed("a_b_c__d", "_", omit_empty=FALSE)
+stri_split_fixed("a_b_c__d", "_", omit_empty=TRUE)
+stri_split_fixed("a_b_c__d", "_", n=2)			# "a" & remainder
+stri_split_fixed("a_b_c__d", "_", n=2, tokens_only=FALSE) 
+stri_split_fixed("a_b_c__d", "_", n=2, tokens_only=TRUE) # "a" & "b" only
+stri_split_fixed("a_b_c__d", "_", n=4, tokens_only=TRUE)
+stri_split_fixed("a_b_c__d", "_", n=4, omit_empty=TRUE, tokens_only=TRUE)
+stri_split_fixed("a_b_c__d", "_", omit_empty=NA)
+stri_split_fixed(c("ab_c", "d_ef_g", "h", ""),"_")
+stri_split_fixed(c("ab_c", "d_ef_g", "h", ""), "_", n=1, tokens_only=TRUE, omit_empty=TRUE)
+stri_split_fixed(c("ab_c", "d_ef_g", "h", ""), "_", n=2, tokens_only=TRUE, omit_empty=TRUE)
+stri_split_fixed(c("ab_c", "d_ef_g", "h", ""), "_", n=3, tokens_only=TRUE, omit_empty=TRUE)
+
+
+
+
+stri_list2matrix:
+=================
+It is used to convert lists of atomic vectors to character matrices
+
+
+stri_split_fixed(c("ab,c", "d,ef,g", ",h", ""), ",", omit_empty=TRUE)
+stri_list2matrix(stri_split_fixed(c("ab,c", "d,ef,g", ",h", ""), ",", omit_empty=TRUE))
+stri_split_fixed(c("ab,c", "d,ef,g", ",h", ""), ",", omit_empty=TRUE, simplify=FALSE)
+stri_split_fixed(c("ab,c", "d,ef,g", ",h", ""), ",", omit_empty=TRUE, simplify=TRUE)
+stri_split_fixed(c("ab,c", "d,ef,g", ",h", ""), ",", omit_empty=NA, simplify=NA)
+
+
+
+stri_trans:
+===========
+It transform strings either to lower case, UPPER CASE, or to Title Case.
+
+
+stri_trans_toupper(data)	#toupper(data)
+stri_trans_tolower(data)	#tolower(data)
+stri_trans_totitle(data)
+stri_trans_totitle(data,type="word")
+stri_trans_totitle(data,type="sentence")
+stri_trans_totitle(data,type="character")
