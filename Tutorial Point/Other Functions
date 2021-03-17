@@ -1,0 +1,11 @@
+attach & detach:
+================
+Attach is used to access the variables present in the data framework without calling the data frame.
+Detach is used to detach the variables present in the data framework.
+
+For example, u have imported the dataset "Mini"
+attach(Mini)    #Run this code to attach and start using function on direct variables in the dataframe and no need to call the dataframe everytime.
+
+It can be done in case of multiple data frameworks also. but it might be a problem if same variable names in multiple data frameworks.
+
+
