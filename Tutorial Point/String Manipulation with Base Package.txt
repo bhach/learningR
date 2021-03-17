@@ -49,7 +49,7 @@ chr_vector[5] <- "Five"
 
 String Manipulation with "base" package:
 ========================================
-This package is basically used for simple text processing.
+This package is basically used for simple text processi
 Some of the string manipulation functions which belongs to base package are
 1. paste()
 2. format()

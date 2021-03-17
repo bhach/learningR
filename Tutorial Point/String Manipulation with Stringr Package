@@ -48,3 +48,60 @@ str_replace_all(phrase, "o", "i")
 #split
 str_split(phrase, "to")
 
+#pattern locate
+str_locate(string, pattern)
+
+
+#Identify US Mobile Numbers from the strings
+strings <- c(
+"310 733 8965",
+"310-292-8753",
+"Work: 310-499-7527; Home: 310.355.3679/310-880-4789",
+"3109185662")
+
+phone<-"([2-9][0-9]{2})[. -]*([0-9]{3})[. -]*([0-9]{4})
+
+
+
+str_locate(strings, phone)
+str_locate_all(strings, phone)
+str_extract(strings,phone)
+str_extract_all(strings,phone)
+str_extract(strings,phone,simplify=T)
+str_extract_all(strings,phone,simplify=T)
+str_match(strings,phone)
+str_match_all(strings,phone)
+str_replace(strings,phone,"XXX-XXX-XXXX")
+str_replace_all(strings,phone,"XXX-XXX-XXXX")
+
+
+
+#Email Addressses
+email<-c(
+"bhask@hotmail.com",
+"lidia@gmail.com",
+"nirmal@ntv.com",
+"abhi@jih.in",
+"raghav@hik.te"
+)
+
+pattern<-"@"
+
+
+str_split(email,pattern)
+str_split(email,pattern,simplify=T)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
