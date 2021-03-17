@@ -49,6 +49,7 @@ chr_vector[5] <- "Five"
 
 String Manipulation with "base" package:
 ========================================
+This package is basically used for simple text processing.
 Some of the string manipulation functions which belongs to base package are
 1. paste()
 2. format()
@@ -144,5 +145,3 @@ It is used to count the number of characters including spaces in a string.
 
 nchar("Welcome to DataHills")	#20
 nchar(9292005440)		#10
-
-

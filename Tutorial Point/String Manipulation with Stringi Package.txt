@@ -1,0 +1,107 @@
+String manipulation with "stringi" package:
+===========================================
+Unlike Base package, Stringi package contains advanced string Processing functions which can be used to deal with more complex problems such as natural language processing.
+
+
+Features of stringi package are 
+1.text sorting, 
+2.text comparing, 
+3.extracting words, 
+4.sentences and characters, 
+5.text transliteration, 
+6.replacing strings, etc.
+
+
+install.packages("stringi")
+library(stringi)
+
+
+
+Avoid "\n" between lines with %s+% at the end of line:
+======================================================
+data <- "Welcome to DataHills.
+         DataHills provides online training."
+data <- "Welcome to DataHills. " %s+%
+        "DataHills provides online training." %s+%
+        "We provide services across India."
+
+
+stri_split_boundaries():
+========================
+It is used to extract words.
+
+Arguments
+---------
+type	: single string input
+skip_word_none	: logical; perform no action for "words" that do not fit into any other categories
+skip_word_number	: logical; perform no action for words that appear to be numbers
+skip_word_letter	: logical; perform no action for words that contain letters,excluding hiragana, katakana, or ideographic characters
+
+
+stri_split_boundaries(data)
+stri_split_boundaries(data, type="line")     #here type is word to last space before another word. Even numbers are considered if they are in between spaces.
+stri_split_boundaries(data, type="word")     #here type is word. characters like spaces, numbers, symbols etc are considerred as word.
+stri_split_boundaries(data, type="word", skip_word_none=TRUE)   #special charcters are omitted except numbers and words.
+stri_split_boundaries(data, type="word", skip_word_letter=TRUE)
+stri_split_boundaries(data, type="word", skip_word_none=TRUE, skip_word_letter=TRUE)
+stri_split_boundaries(data, type="word", skip_word_number=TRUE)
+stri_split_boundaries(data, type="word", skip_word_none=TRUE, skip_word_number=TRUE)
+stri_split_boundaries(data, type="sentence")
+stri_split_boundaries(data, type="character")
+
+
+
+stri_count_boundaries:
+======================
+Count the number of text boundaries(like character, word, line, or sentence boundaries) in a string.
+
+
+stri_count_boundaries(data)
+stri_count_boundaries(data, type="line")
+stri_count_boundaries(data, type="word")
+stri_count_boundaries(data, type="sentence")
+stri_count_boundaries(data, type="character")
+stri_count_words(data)
+stri_length(data)
+stri_numbytes(data)
+
+
+
+stri_startswith & stri_endswith:
+================================
+It determine whether a string starts or ends with a given pattern.
+
+#checks whether the string vector is starting with word "s"
+stri_startswith_fixed(c("srinu", "data", "science", "statistics", "hills"), "s")
+
+#Adding strength and coll into code searches for both words "s" or "S"
+stri_startswith_coll(c("srinu", "data", "science", "Statistics", "hills"), "s", strength=1)
+
+#regex searches for patterns for starting with word "s"
+stri_detect_regex(c("srinu", "data", "science", "statistics", "hills"), "^s")
+
+#No cap here searches for word "s" anywhere
+stri_detect_regex(c("srinu", "data", "science", "statistics", "hills"), "s")
+
+#detecting pattern between two words
+stri_startswith_fixed("datahills", "hill")
+
+#detecting pattern between two words based on position
+stri_startswith_fixed("datahills", "hill", from=5)
+
+
+
+stri_replace_all:
+=================
+It replaces a word with another word based on conditions
+
+--> vectorize_all parameter, which defaults to TRUE
+stri_replace_all_fixed(data, " ", "#")
+stri_replace_all_fixed(data, "a", "A")
+stri_replace_all_fixed(data,c("DataHills","provides"), c("Information","offers"), vectorize_all=FALSE)
+stri_replace_all_fixed(data,c("DataHills","provides"), c("Information","offers"), vectorize_all=TRUE)
+stri_replace_all_fixed(data,c("DataHills","provides"), c("Information","offers"))
+stri_replace_all_fixed(data,c("Data","provides"), c("Information","offers"), vectorize_all=FALSE)
+stri_replace_all_fixed(data,c("Data","provides"), c("Information","offers"), vectorize_all=TRUE)
+stri_replace_all_fixed(data,c("Data","provides"), c("Information","offers"), vectorize_all=FALSE)
+stri_replace_all_regex(data,"\\b"%s+%c("Data","provides")%s+%"\\b", c("Information","offers"),vectorize_all=FALSE)
