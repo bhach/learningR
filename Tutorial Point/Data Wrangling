@@ -1,0 +1,11 @@
+Data Wrangling:
+==============
+
+What is Data Wrangling?
+It is the process of converting raw data to the formats needed for further analysis.
+
+
+library(dslabs)
+
+Step1: Import the data
+Step2: Convert the data to tidy form

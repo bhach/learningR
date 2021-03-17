@@ -43,5 +43,43 @@ PDF <- pdf_text("oregon_grass_and_legume_seed_crops_preliminary_estimates_2017.p
   readr::read_lines()
   
 
+Importing using Readr & Readxl package:
+install.packages(readr)
+
+Readr:
+======
+read_table   #white space seperated values-txt
+read_csv     #comma seperated values-csv
+read_csv2    #semiclon seperated values-csv
+read_tsv     #tab delimiited seperated values-tsv
+read_delim   $general text file, must define delimitter-txt
+
+
+Readxl:
+======
+read_excel   #autodetect the format-xlsx/xls
+read_xls     #orginal format-xls
+read_xlsx    #new format-xlsx
+
+
+  
+How to Import Spreadsheets:
+===========================
+
+
+
+  
+How to Import CSV:
+==================
+
+
+
+  
+How to Import txt:
+==================
+
+
+  
+
 
 
