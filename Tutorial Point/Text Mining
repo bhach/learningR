@@ -1,0 +1,55 @@
+What is Text Mining?
+Text Mining/Text Analytics is the process of deriving meaningful information from natural language text.
+
+Use-cases:
+1. Gmail Spam detection
+2. Google Autocomplete
+3. Predictive typing
+4. Spell check
+
+What is NLP?
+NLP is a natural language processing, which is a part of computer science and artifical intelligence which deals with human languages.
+
+NLP is a subset of Text Mining.
+Text Mining is a process and NLP is a method.
+
+Applications of NLP:
+1.Sentimental Analysis
+2.Chat Bot
+3.Speech Recoginition
+4.Machine Translation
+5.Keyword Search
+6.Advertisement Matching
+7.Spell Checking
+8.Information Extraction
+
+Tokenization: Breaking complex sentences into word, Understand the importance of each word with respect to sentence and Produce structural description of an input.
+
+Stemming Algos:Detect based on the root words
+
+Lemmatization: It takes into account morphology of words.
+
+Remove Stop Words: Removes common words like how,to, and etc....to focus on keywords
+
+Document Term Matrix: It is matrix with documents as rows and words as columns. If a particular word occurs in a doc, then matrix entry would be 1 otherwise 0.
+
+
+#Hands-On
+Refer to image "Text Mining Using R.PNG"
+
+
+install.packages("tm")
+library(tm)
+
+#Create a folder and upoad all documents and give the location in " "
+docs <- Corpus(DirSource("/cloud/project/textminin_usingR"))
+inspect(docs)   #to inspect docs
+
+
+
+
+
+
+
+
+
