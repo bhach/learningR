@@ -87,8 +87,22 @@ qqnorm(x)
 qqline(x,col="red3")
 
 #Plotting side by side
-mypar(1,2)
+#mypar(1,2)
 hist(x,breaks=seq(floor(min(x)),ceiling(max(x))),main="Height Histogram",xlab="Hieght in inches",ylab="Frequency",col="red3")
 qqnorm(x)
 qqline(x,col="red3")
+
+
+#BoxPlot
+boxplot(exec.pay,horizontal = T,main="Box Plot of Employee Salaries",xlab="Value",ylim=c(0,400))
+boxplot(InsectSprays$count ~ InsectSprays$spray)
+
+#Scatterplot
+plot(x,y,xlab="Father's height in inches",ylab="Son's height in inches",main=paste("correlation =",signif(cor(x,y),2)))
+
+#Stratification
+groups <- split(y,round(x))
+#use round or else , we will get scatterplot
+boxplot(groups)
+print(mean(y[ round(x) == 72]))
 
