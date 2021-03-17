@@ -60,10 +60,6 @@ xs<-seq(floor(min(x)),ceiling(max(x)),0.1)
 plot(xs,ecdf(x)(xs),type="l",xlab="Height in inches",ylab="F(x)")
 #This reports the percentage of individuals that are below that number
 
-#Making QQ (Quantile Quantile) plot
-What is Q-Q Plot?
-Quantile-quantile (q-q) plot is a graphical technique for determining if two data sets come from populations with a common distribution. A q-q plot is a plot of the quantiles of the first data set against the quantiles of the second data set
-
 
 #Basic test to seee if the distrubution is a normal or not
 mean(x<70)
@@ -71,4 +67,26 @@ pnorm(70,mean(x),sd(x))
 
 #Above both values are very close and normal distrubution can be great approximation for this data.
 #Keep checking by using various values instead of 70
+
+
+#Making QQ (Quantile Quantile) plot
+What is Q-Q Plot?
+Quantile-quantile (q-q) plot is a graphical technique for determining if two data sets come from populations with a common distribution. A q-q plot is a plot of the quantiles of the first data set against the quantiles of the second data set
+Q-Q Plot answers whether the data is normally distrubed or not.
+It is plotted between the data quantiles and normal quantiles.
+
+How to draw Q-Q plot
+#Step1: Give each point its own quantile
+#Step2: Get yourself a normal curve (Any normal curve)
+#Step3: Add the same number quantiles for normal curve as number of quantiles in data
+
+If the data is normally distrubuted, most of the data points lies on that line.
+#Q-Q plot is given by:
+qqnorm(x)
+#Q-Q line is given by:
+qqline(x,col="red3")
+
+#install.packages(rafalib)
+#library(rafalib)
+
 
