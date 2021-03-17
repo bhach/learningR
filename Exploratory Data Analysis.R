@@ -86,7 +86,9 @@ qqnorm(x)
 #Q-Q line is given by:
 qqline(x,col="red3")
 
-#install.packages(rafalib)
-#library(rafalib)
-
+#Plotting side by side
+mypar(1,2)
+hist(x,breaks=seq(floor(min(x)),ceiling(max(x))),main="Height Histogram",xlab="Hieght in inches",ylab="Frequency",col="red3")
+qqnorm(x)
+qqline(x,col="red3")
 
