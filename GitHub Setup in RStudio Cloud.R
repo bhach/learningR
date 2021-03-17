@@ -39,3 +39,19 @@ And now we are ready to read in the file:
 filename <- file.path(dir,"extdata/femaleMiceWeights.csv")
 dat <- read.csv(filename)
 dat
+head(dat)
+library(dplyr)
+library(tidyverse)
+chow <- dat%>%
+  filter(Diet=="chow")
+chow
+chow_weight <-chow%>%
+  select(Bodyweight)
+chow_weight
+unlisted_weights <- chow_weight %>%
+  unlist() %>%
+  print(unlisted_weights)
+unlist(chow_weight)
+
+
+
