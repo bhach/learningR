@@ -4,102 +4,59 @@ Importing Data:
 getwd()       #current working directory
 setwd("new path")       #setting new directory as working directory
 
+For importing from Github, paste the raw code in place of url.
+
+
+How to Import a data using Base R:
+=================================
+BaseR imports files as dataframe but not tibble.
+BaseR converts categorical characters as factors instead of characters.
+
+read.csv()
+read.table()
+
 
 How to Import CSV:
-==================
+------------------
 In CSV, by default, the delimitter is ","
 Parameters: file, header, sep, quote, dec, fill, comment.char
 Add the file in your current working directory
 
-From Working Directory:
------------------------
+
+->From Current Working Directory:
 read.csv("file.csv",sep=",",stringsAsFactors=T)
 
+->From Any Other Directory/URL:
+read.csv("fullpath of csv file/URL")
 
-From Any Other Directory:
--------------------------
-read.csv("fullpath of csv file")
-
-
-Reading a CSV File Separated by ";":
-------------------------------------
+->Reading a CSV File Separated by ";":
 wines <- read.csv("c:/Users/Sreenu/Desktop/MLDataSets/winequality-red.csv",sep=";")
 
 
+
 How to Import EXCEL:
-====================
+--------------------
 R can read and write the excel files using xlsx package.
+read.xlsx() and read.xlsx2 functions are used to import the excel files.
+read.xlsx2 is faster on big files compared to read.xlsx function.
+
 
 install.packages("xlsx")
 library("xlsx")
 
-Reading the Excel File:
------------------------
-read.xlsx() and read.xlsx2 functions are used to import the excel files.
-read.xlsx2 is faster on big files compared to read.xlsx function.
 
-withtout Sheet Index:
----------------------
+->withtout Sheet Index:
 emp <- read.xlsx("c:/Users/Sreenu/Desktop/MLDataSets/emp10.xlsx")	#Error
 
 
-with sheet Index:
------------------
+->with sheet Index:
 emp <- read.xlsx("c:/Users/Sreenu/Desktop/MLDataSets/emp10.xlsx", sheetIndex = 1)
 
 
-How to Import from Clipboard:
-=============================
 
+How to Import Data using readr:
+===============================
 
-
-
-
-How to Import from Github/URL:
-==============================
-#Go to the file and click raw
-#Copy the url
-#Install and load downloader package
-
-
-library(downloader)
-url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
-filename <- "femaleMiceWeights.csv" 
-download(url, destfile=filename)
-
-
-How to Install packages from GitHub and read files from github:
-===============================================================
-install.packages("devtools")
-library(devtools)
-install_github("genomicsclass/dagdata")
-dir <- system.file(package="dagdata") #extracts the location of package
-list.files(dir)
-list.files(file.path(dir,"extdata")) #external data is in this directory
-
-And now we are ready to read in the file:
-filename <- file.path(dir,"extdata/femaleMiceWeights.csv")
-dat <- read.csv(filename)
-
-
-How to Clone Complete Repository from GitHub:
-=============================================
-1. Create a directory
-2. Enter in Terminal "git clone "url"
-3. in place of url, add the github SSH code
-
-
-How to Import a data from PDF:
-==============================
-1. Add your pdf in the directory
-2. Install and load pdftools and tidyverse
-3. Add your pdf into your project
-PDF <- pdf_text("oregon_grass_and_legume_seed_crops_preliminary_estimates_2017.pdf") %>%
-  readr::read_lines()
-  
-
-Importing using Readr & Readxl package:
-=======================================
 install.packages(readr)
 
 Readr:
@@ -116,3 +73,93 @@ Readxl:
 read_excel   #autodetect the format-xlsx/xls
 read_xls     #orginal format-xls
 read_xlsx    #new format-xlsx
+
+
+How to import from a url/directory:
+-----------------------------------
+url <- "https://raw.githubusercontent.com/rafalab/dslabs/master/inst/extdata/murders.csv"
+dat <- read_csv(url)
+download.file(url, "murders.csv")      #use this line code to download a local copy
+
+
+creating a temporary file and load into an object and erase the file keeping the object:
+----------------------------------------------------------------------------------------
+tmp_filename <- tempfile()
+download.file(url,tmp_filename)
+dat<-read_csv(tmp_filename)
+file.remove(tmp_filename)
+
+
+
+Data Extraction from XML:
+=========================
+--> Extensible Markup Language (XML) is a file format which shares the data on the world wide web. 
+--> XML is similar to HTML it contains markup tags. 
+--> We can extract XML files using the "XML" package.
+
+install.packages("XML")
+library(XML)
+
+
+Reading XML File:
+-----------------
+emp_xml <- xmlParse("C:/Users/Sreenu/Desktop/MLDataSets/emp10.xml")
+print(emp_xml)
+
+# Exract the root node form the xml file.
+emp_root <- xmlRoot(emp_xml)
+
+# Extract the details of the first node
+emp_root[1]
+
+# Get the first element of the first node.
+emp_root[[1]][[1]]
+
+# Get the fifth element of the first node.
+emp_root[[1]][[5]]
+
+# Get the second element of the third node.
+emp_root[[3]][[2]]
+
+# Find number of nodes in the root.
+emp_size <- xmlSize(emp_root)
+
+
+XML to Data Frame:
+------------------
+For data analysis it is better to convert the xml file into a data frame.
+We have to use xmlToDataFrame() function to convert into data frame.
+
+emp_df <- xmlToDataFrame("C:/Users/Sreenu/Desktop/MLDataSets/emp10.xml")
+
+
+Data Extraction from JSON:
+==========================
+JavaScript Object Notation files can read by using the rjson package.
+install.packages("rjson")
+library(rjson)
+
+Read the JSON File:
+-------------------
+Read the JSON file by using fromJSON() function.
+a <- fromJSON(file = "file_name.json")
+
+JSON to Data Frame:
+-------------------
+For data analysis it is better to convert the JSON file to a data frame.
+We have to use as.data.frame() function to convert into data frame.
+b <- as.data.frame(a)
+
+
+How to Import a data from PDF:
+==============================
+1. Add your pdf in the directory
+2. Install and load pdftools and tidyverse
+3. Add your pdf into your project
+PDF <- pdf_text("oregon_grass_and_legume_seed_crops_preliminary_estimates_2017.pdf") %>%
+  readr::read_lines()
+  
+
+
+
+

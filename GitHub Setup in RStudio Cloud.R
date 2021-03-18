@@ -11,6 +11,24 @@
 
 Now enjoy connected to Git all the time and do push and pull
 
+How to Install packages from GitHub and read files from github:
+  ===============================================================
+  install.packages("devtools")
+library(devtools)
+install_github("genomicsclass/dagdata")
+dir <- system.file(package="dagdata") #extracts the location of package
+list.files(dir)
+list.files(file.path(dir,"extdata")) #external data is in this directory
 
+And now we are ready to read in the file:
+  filename <- file.path(dir,"extdata/femaleMiceWeights.csv")
+dat <- read.csv(filename)
+
+
+How to Clone Complete Repository from GitHub:
+  =============================================
+  1. Create a directory
+2. Enter in Terminal "git clone "url"
+3. in place of url, add the github SSH code
 
 

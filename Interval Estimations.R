@@ -58,4 +58,9 @@ output
 
 
 
+x<-sample(1:100,5)
+y<-replicate(10000,{
+  mean(x)
+})
+plot(y)
 
