@@ -1,8 +1,59 @@
-How to Import Individual data file from github/URL:
-==================================================
+
+
+getwd()       #current working directory
+setwd("new path")       #setting new directory as working directory
+
+
+How to Import CSV:
+==================
+In CSV, by default, the delimitter is ","
+Parameters: file, header, sep, quote, dec, fill, comment.char
+Add the file in your current working directory
+
+From Working Directory:
+-----------------------
+read.csv("file.csv",sep=",",stringsAsFactors=T)
+
+
+From Any Other Directory:
+-------------------------
+read.csv("fullpath of csv file")
+
+
+Reading a CSV File Separated by ";":
+------------------------------------
+wines <- read.csv("c:/Users/Sreenu/Desktop/MLDataSets/winequality-red.csv",sep=";")
+
+
+Data Extraction from EXCEL:
+===========================
+R can read and write the excel files using xlsx package.
+
+install.packages("xlsx")
+library("xlsx")
+
+Reading the Excel File:
+-----------------------
+read.xlsx() and read.xlsx2 functions are used to import the excel files.
+read.xlsx2 is faster on big files compared to read.xlsx function.
+
+withtout Sheet Index:
+---------------------
+emp <- read.xlsx("c:/Users/Sreenu/Desktop/MLDataSets/emp10.xlsx")	#Error
+
+
+with sheet Index:
+-----------------
+emp <- read.xlsx("c:/Users/Sreenu/Desktop/MLDataSets/emp10.xlsx", sheetIndex = 1)
+
+
+
+How to Import from Github/URL:
+==============================
 #Go to the file and click raw
 #Copy the url
 #Install and load downloader package
+
 
 library(downloader)
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"

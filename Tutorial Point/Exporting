@@ -1,0 +1,14 @@
+Exporting:
+==========
+Exporting is frequently used as writitng.
+
+
+Exporting data as CSV:
+======================
+write.csv(recent_join, "emp6.csv")
+
+
+Exporting data as EXCEL file:
+=============================
+write.xlsx(a, file="write_emp.xlsx", sheetName="first6", append=FALSE)
+

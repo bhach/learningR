@@ -9,3 +9,14 @@ attach(Mini)    #Run this code to attach and start using function on direct vari
 It can be done in case of multiple data frameworks also. but it might be a problem if same variable names in multiple data frameworks.
 
 
+
+subset():
+
+#select all columns except desig whose sal is greater than 60000
+subset(emp, sal > 60000, select = -desig)
+
+#employees who joined on or after 2013
+subset(emp, as.Date(doj) > as.Date("2013-01-01"))
+recent_join <- subset(emp, as.Date(doj) > as.Date("2013-01-01"))
+
+
