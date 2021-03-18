@@ -93,9 +93,9 @@ file.remove(tmp_filename)
 
 Data Extraction from XML:
 =========================
---> Extensible Markup Language (XML) is a file format which shares the data on the world wide web. 
---> XML is similar to HTML it contains markup tags. 
---> We can extract XML files using the "XML" package.
+Extensible Markup Language (XML) is a file format which shares the data on the world wide web. 
+XML is similar to HTML it contains markup tags. 
+We can extract XML files using the "XML" package.
 
 install.packages("XML")
 library(XML)
@@ -136,6 +136,7 @@ emp_df <- xmlToDataFrame("C:/Users/Sreenu/Desktop/MLDataSets/emp10.xml")
 Data Extraction from JSON:
 ==========================
 JavaScript Object Notation files can read by using the rjson package.
+
 install.packages("rjson")
 library(rjson)
 
