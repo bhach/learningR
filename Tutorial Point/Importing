@@ -1,4 +1,5 @@
-
+Importing Data:
+===============
 
 getwd()       #current working directory
 setwd("new path")       #setting new directory as working directory
@@ -25,8 +26,8 @@ Reading a CSV File Separated by ";":
 wines <- read.csv("c:/Users/Sreenu/Desktop/MLDataSets/winequality-red.csv",sep=";")
 
 
-Data Extraction from EXCEL:
-===========================
+How to Import EXCEL:
+====================
 R can read and write the excel files using xlsx package.
 
 install.packages("xlsx")
@@ -47,6 +48,12 @@ with sheet Index:
 emp <- read.xlsx("c:/Users/Sreenu/Desktop/MLDataSets/emp10.xlsx", sheetIndex = 1)
 
 
+How to Import from Clipboard:
+=============================
+
+
+
+
 
 How to Import from Github/URL:
 ==============================
@@ -59,7 +66,6 @@ library(downloader)
 url <- "https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv"
 filename <- "femaleMiceWeights.csv" 
 download(url, destfile=filename)
-
 
 
 How to Install packages from GitHub and read files from github:
@@ -76,13 +82,11 @@ filename <- file.path(dir,"extdata/femaleMiceWeights.csv")
 dat <- read.csv(filename)
 
 
-
 How to Clone Complete Repository from GitHub:
 =============================================
 1. Create a directory
 2. Enter in Terminal "git clone "url"
 3. in place of url, add the github SSH code
-
 
 
 How to Import a data from PDF:
@@ -95,6 +99,7 @@ PDF <- pdf_text("oregon_grass_and_legume_seed_crops_preliminary_estimates_2017.p
   
 
 Importing using Readr & Readxl package:
+=======================================
 install.packages(readr)
 
 Readr:
@@ -111,26 +116,3 @@ Readxl:
 read_excel   #autodetect the format-xlsx/xls
 read_xls     #orginal format-xls
 read_xlsx    #new format-xlsx
-
-
-  
-How to Import Spreadsheets:
-===========================
-
-
-
-  
-How to Import CSV:
-==================
-
-
-
-  
-How to Import txt:
-==================
-
-
-  
-
-
-
