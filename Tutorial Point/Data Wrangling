@@ -46,4 +46,180 @@ sample_frac() function returns randomly N% of rows.
 sample_frac(mydata,0.1)		# it returns randomly 10% of rows
 
 
+Remove Duplicate Rows based on all the columns (Complete Row):
+-------------------------------------------------------------
+distinct() function is used to eliminate duplicates.
+dim(x1)
+x1 = distinct(mydata)
+dime(x1)
 
+Remove Duplicate Rows based on a Particular column:
+---------------------------------------------------
+x2 = distinct(mydata, Index, .keep_all= TRUE)
+dim(x2)
+
+Remove Duplicates Rows based on multiple columns (AND):
+-------------------------------------------------------
+we are using two columns - Index, Y2010 to determine uniqueness.
+x2 = distinct(mydata, Index, Y2010, .keep_all= TRUE)
+dim(x2)
+
+Selecting Columns:
+------------------
+Selects column "Index", columns from "Y2006" to "Y2008".
+mydata2 = select(mydata, State, Y2006:Y2008)
+
+Dropping columns:
+-----------------
+The minus sign before a column tells R to drop the variable.
+mydata2 = select(mydata, -Index, -State)
+
+The above code can also be written like :
+mydata2 = select(mydata, -c(Index,State))
+
+Selecting or Dropping columns starts with 'Y':
+----------------------------------------------
+starts_with() function is used to select columns starts with an alphabet.
+mydata3 = select(mydata, starts_with("Y"))
+head(mydata3)
+
+Adding a negative sign before starts_with() implies dropping the columns starts with 'Y'
+mydata33 = select(mydata, -starts_with("Y"))
+head(mydata33)
+
+
+The following functions helps you to select columns based on their names:
+Helpers		Description
+=======		===========
+starts_with()	Starts with a prefix
+ends_with()	Ends with a prefix
+contains()	Contains a literal string
+matches()	Matches a regular expression
+num_range()	Numerical range like x01, x02, x03.
+one_of()	Columns in character vector.
+everything()	All columns.
+
+Selecting columns contain 'I' in their names:
+--------------------------------------------
+mydata4 = select(mydata, contains("I"))
+
+Reorder columns:
+----------------
+The column 'State' in the front and the remaining columns follow that.
+mydata5 = select(mydata, State, everything())
+
+
+Rename column names:
+--------------------
+It is used to change column name.
+
+we are renaming 'Index' column to 'Index1'.
+mydata6 = rename(mydata, Index1=Index)
+
+
+filter():
+---------
+It is used to subset data with matching logical conditions.
+
+->Single Selection Criteria:
+mydata7 = filter(mydata, Index == "A")
+
+->Multiple Selection Criteria:
+The %in% operator can be used to select multiple items.
+
+Select rows against 'A' and 'C' in column 'Index'.
+mydata7 = filter(mydata, Index %in% c("A", "C"))
+
+->'AND' Condition in Selection Criteria:
+Filtering data for 'A' and 'C' in the column 'Index' and income greater than 13 lakh in Year 2002.
+mydata8 = filter(mydata, Index %in% c("A", "C") & Y2002 >= 1300000)
+
+->'OR' Condition in Selection Criteria:
+| (OR) in the logical condition. It means any of the two conditions.
+mydata9 = filter(mydata, Index %in% c("A", "C") | Y2002 >= 1300000)
+
+->NOT Condition:
+The "!" sign is used to reverse the logical condition.
+mydata10 = filter(mydata, !Index %in% c("A", "C"))
+
+->CONTAINS Condition:
+The grepl() function is used to search for pattern matching. 
+we are looking for records wherein column state contains 'Ar' in their name.
+mydata10 = filter(mydata, grepl("Ar", State))
+
+
+summarise():
+------------
+It is used to summarize data.
+
+Summarize selected columns:
+we are calculating mean and median for the column Y2015.
+summarise(mydata, Y2015_mean = mean(Y2015), Y2015_med=median(Y2015))
+
+Summarize Multiple Columns
+we are calculating number of records, mean and median for columns Y2005 and Y2006. 
+summarise_at() function allows us to select multiple columns by their names.
+summarise_at(mydata, vars(Y2005, Y2006), funs(n(), mean, median))
+
+
+Working on another dataset:
+---------------------------
+# I am using the airquality dataset from the datasets package. 
+# The airquality dataset contains information about air quality measurements in New York from May 1973 – September 1973.
+
+dim(airquality)
+names(airquality)
+head(airquality)
+
+sample_n(airquality, size = 10)
+sample_frac(airquality, size = 0.1)
+
+# we can return all rows with Temp greater than 70 as follows:
+filter(airquality, Temp > 70)
+
+# return all rows with Temp larger than 80 and Month higher than 5.
+filter(airquality, Temp > 80 & Month > 5)
+
+# adds a new column that displays the temperature in Celsius.
+mutate(airquality, TempInC = (Temp - 32) * 5 / 9)
+
+summarise(airquality, mean(Temp, na.rm = TRUE))
+summarise(airquality, Temp_mean = mean(Temp, na.rm = TRUE))
+
+# Group By
+--> The group_by function is used to group data by one or more columns. 
+--> we can group the data together based on the Month, and then use the summarise function to calculate and display the mean temperature for each month.
+summarise(group_by(airquality, Month), mean(Temp, na.rm = TRUE))
+
+# Count
+--> The count function calculates the no. of observations based on a group. 
+--> It is slightly similar to the table function in the base package.
+count(airquality, Month)
+--> This means that there are 31 rows with Month = 5, 30 rows with Month = 6, and so on.
+
+# Arrange
+--> The arrange function is used to arrange rows by columns. 
+--> Currently, the airquality dataset is arranged based on Month, and then Day. 
+--> We can use the arrange function to arrange the rows in the descending order of Month, and then in the ascending order of Day.
+arrange(airquality, desc(Month), Day)
+
+# Pipe
+--> The pipe operator in R, represented by %>% can be used to chain code together. 
+--> It is very useful when you are performing several operations on data, and don’t want to save the output at each intermediate step.
+
+--> For example, let’s say we want to remove all the data corresponding to Month = 5, group the data by month, and then find the mean of the temperature each month. 
+--> The conventional way to write the code for this would be:
+
+filteredData <- filter(airquality, Month != 5)
+groupedData <- group_by(filteredData, Month)
+summarise(groupedData, mean(Temp, na.rm = TRUE))
+
+--> With piping, the above code can be rewritten as:
+
+airquality %>% 
+    filter(Month != 5) %>% 
+    group_by(Month) %>% 
+    summarise(mean(Temp, na.rm = TRUE))
+    
+    
+    
