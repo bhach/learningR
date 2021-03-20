@@ -2,7 +2,7 @@ Data Wrangling:
 ==============
 
 What is Data Wrangling?
-It is the process of converting raw data to the formats needed for further analysis.
+It is the process of converting and mapping the raw data to the formats needed for further analysis. It is often referred as "Data Munging" or "Data Transformation".
 
 
 library(dslabs)
@@ -222,4 +222,64 @@ airquality %>%
     summarise(mean(Temp, na.rm = TRUE))
     
     
-    
+tidyr:
+======
+--> tidyr package is an evolution of reshape2 (2010-2014) and reshape (2005-2010) packages.
+--> It's designed specifically for data tidying (not general reshaping or aggregating) 
+--> tidyr is new package that makes it easy to “tidy” your data. 
+--> it’s easy to munge (with dplyr), visualise (with ggplot2 or ggvis) and model (modelling packages).
+
+Install and Load tidyr:
+install.packages("tidyr")
+library(tidyr)
+
+Translation b/w the terminology used in different places:
+tidyr		gather	spread
+====		======	======
+reshape(2)	melt	cast
+spreadsheets	unpivot	pivot
+databases	fold	unfold
+
+# I will use the mtcars dataset from the datasets library.
+head(mtcars)
+dim(mtcars)
+
+# Let us include the names of the cars in a column called car for easier manipulation.
+mtcars$car <- rownames(mtcars)
+
+
+gather():
+=========
+--> gather() function is used to converts wide data to longer format. 
+--> It is analogous to the melt function from reshape2.
+
+syntax:
+gather(data, key, value, ..., na.rm = FALSE, convert = FALSE)
+where ... is the specification of the columns to gather.
+
+# We can replicate what melt does as follows:
+mtcarsNew <- mtcars %>% gather(attribute, value, -car)
+dim(mtcarsNew)
+head(mtcarsNew)
+tail(mtcarsNew)
+
+--> As we can see, it gathers all the columns except car and places their name and value into the attritube and value column respectively.
+--> The great thing about tidyr is that you can gather only certain columns and leave the others alone. 
+--> If we want to gather all the columns from mpg to gear and leave the carb and car columns as they are, we can do it as follows:
+
+mtcarsNew <- mtcars %>% gather(attribute, value, mpg:gear)
+dim(mtcarsNew)
+head(mtcarsNew)
+
+spread():
+=========
+--> spread() fucntion is used to converts long data to wider format. 
+--> It is analogous to the cast function from reshape2.
+
+syntax:
+spread(data, key, value, fill = NA, convert = FALSE, drop = TRUE)
+
+We can replicate what cast does as follows:
+
+mtcarsSpread <- mtcarsNew %>% spread(attribute, value)
+head(mtcarsSpread)
