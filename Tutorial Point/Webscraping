@@ -1,2 +1,49 @@
 Webscraping:
 ============
+
+Web scraping is extracting data from a website.
+The rvest web harvesting package includes functions to extract nodes of an HTML document: html_nodes() extracts all nodes of different types, and html_node() extracts the first node.
+html_table() converts an HTML table to a data frame.
+
+import a webpage into R:
+-----------------------
+library(rvest)
+url <- "https://en.wikipedia.org/wiki/Murder_in_the_United_States_by_state"
+h <- read_html(url)
+tab <- h %>% html_nodes("table")    #extracts all nodes of html
+tab <- tab[[2]]
+tab <- tab %>% html_table
+
+Above process is same for all URLs. Now see tab and set the names
+tab
+tab <- tab %>% setNames(c("state", "population", "total", "murders", "gun_murders", "gun_ownership", "total_rate", "murder_rate", "gun_murder_rate"))
+head(tab)
+
+
+CSS Page:
+=========
+use selectorGadget to identify the css code
+https://selectorgadget.com/
+
+h <- read_html("http://www.foodnetwork.com/recipes/alton-brown/guacamole-recipe-1940609")
+recipe <- h %>% html_node(".o-AssetTitle__a-HeadlineText") %>% html_text()
+prep_time <- h %>% html_node(".m-RecipeInfo__a-Description--Total") %>% html_text()
+ingredients <- h %>% html_nodes(".o-Ingredients__a-Ingredient") %>% html_text()
+
+guacamole <- list(recipe, prep_time, ingredients)
+guacamole
+
+Since recipe pages from this website follow this general layout, we can use this code to create a function that extracts this information:
+get_recipe <- function(url){
+    h <- read_html(url)
+    recipe <- h %>% html_node(".o-AssetTitle__a-HeadlineText") %>% html_text()
+    prep_time <- h %>% html_node(".m-RecipeInfo__a-Description--Total") %>% html_text()
+    ingredients <- h %>% html_nodes(".o-Ingredients__a-Ingredient") %>% html_text()
+    return(list(recipe = recipe, prep_time = prep_time, ingredients = ingredients))
+} 
+
+and then use it on any of their webpages:
+get_recipe("http://www.foodnetwork.com/recipes/food-network-kitchen/pancakes-recipe-1913844")
+
+There are several other powerful tools provided by rvest. For example, the functions html_form(), set_values(), and submit_form() permit you to query a webpage from R. This is a more advanced topic not covered here.
+

@@ -1,0 +1,21 @@
+Pacman Pakage:
+==============
+
+The pacman package is an R package management tool.
+
+install.packages("pacman")
+
+pacman func      Base Equivalent                 Description
+p_load      install.packages + library	    Load & Install Packages
+p_install	       install.packages           Install Packages 
+p_load_gh	            NONE       	     Load & Install GitHub Packages
+p_install_g           NONE	           Install Packages from GitHub	
+p_unload	           detach	                    Unload Packages
+p_update	       update.packages	       Update Out-of-Date Packages
+
+
+
+
+
+
+
