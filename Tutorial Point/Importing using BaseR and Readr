@@ -90,6 +90,25 @@ dat<-read_csv(tmp_filename)
 file.remove(tmp_filename)
 
 
+read_tsv():
+-----------
+a<-read_tsv("http://594442.youcanlearnit.net/inpatient.tsv")
+
+read_delim():
+-------------
+a<-read_delim(file="http://594442.youcanlearnit.net/drugdeaths.txt",delim="^")
+
+Reading CSV with delim function: use delim as ,
+
+read_fwf():
+-----------
+Reading fixed width files
+names<-c("Name","Title","Department","Salary")
+lengths<-c(32,50,24,NA)
+
+widths<-fwf_widths(lengths,names)
+employees<-read_fwf("http://594442.youcanlearnit.net/chicaoemployess.txt",widths)
+
 
 Data Extraction from XML:
 =========================
@@ -161,6 +180,11 @@ PDF <- pdf_text("oregon_grass_and_legume_seed_crops_preliminary_estimates_2017.p
   readr::read_lines()
   
 
+Import Data from Databases using RODBC package:
+-----------------------------------------------
+
+Import Data from APIs:
+----------------------
 
 
 
