@@ -1,0 +1,50 @@
+Data Transformation and Factor Analysis with table():
+=====================================================
+table():
+========
+returns the count for each categorical values.
+table uses the cross-classifying factors to build a contingency table of the counts at each combination of factor levels.
+
+cars <- read.csv("C:/Users/Sreenu/Desktop/MLDataSets/usedcars.csv",stringsAsFactors=TRUE)
+table(cars$model)
+
+Prop.table():
+=============				
+Proportionality
+Express Table Entries as Fraction of Marginal Table
+In mathematics, two variables are proportional if there is always a constant ratio between them. 
+The constant is called the coefficient of proportionality or proportionality constant.
+
+Single Varaible:
+----------------
+prop.table(cars$model)			#it is not possible
+prop.table(table(cars$model))
+prop.table(table(cars$model))*100	#result in percentage
+
+
+Two Variables:
+--------------
+table(cars$model,cars$transmission)
+prop.table(table(cars$model,cars$transmission))
+prop.table(table(cars$model,cars$transmission))*100
+
+
+CrossTable():
+=============
+CrossTable() function belongs to "gmodels" package (for more analysis)
+install.packages("gmodels")
+library(gmodels)
+
+Cross Tabulation With Tests For Factor Independence:
+The CrossTable( ) function in the gmodels package produces crosstabulations modeled after PROC FREQ in SAS or CROSSTABS in SPSS. It has a wealth of options.
+We can control whether 
+	row percentages (prop.r), 
+	column percentages (prop.c), 
+	table percentages (prop.t), 
+	chisq percentages (prop.chisq) by making them TRUE.
+
+CrossTable(cars$model,cars$transmission)
+CrossTable(cars$model,cars$transmission,prop.t=F,prop.c=F,prop.r=F,prop.chisq=F)
+CrossTable(cars$model,cars$transmission,prop.t=F,prop.c=F,prop.r=T,prop.chisq=F)
+CrossTable(cars$model,cars$transmission,prop.t=F,prop.c=T,prop.r=T,prop.chisq=F)
+CrossTable(cars$model,cars$transmission,prop.t=T,prop.c=T,prop.r=T,prop.chisq=F)

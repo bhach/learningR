@@ -1,0 +1,100 @@
+Introduction to Data Visualization:
+===================================
+
+library(dslabs)
+
+Categorical Data:
+================
+Categorical data are variables that are defined by a small number of groups.
+
+Types:
+------
+1. Ordinal categorical data have an inherent order to the categories (mild/medium/hot, for example).
+2. Non-ordinal categorical data have no order to the categories.
+
+Frequency table is the simplest way to show a categorical distribution.
+Use prop.table() to convert a table of counts to a frequency table.
+Barplots display the distribution of categorical variables and are a way to visualize the information in frequency tables.
+
+prop.table(table(heights$sex))
+
+Numerical Data:
+===============
+Numerical data take a variety of numeric values.
+
+Types:
+------
+1. Continuous variables can take any value.
+2. Discrete variables are limited to sets of specific values.
+
+For continuous numerical data, reporting the frequency of each unique entry is not an effective summary as many or most values are unique.
+Instead, a distribution function is required.
+The cumulative distribution function (CDF) is a function that reports the proportion of data below a value  a  for all values of  a :  F(a)=Pr(x≤a) .
+
+A histogram divides data into non-overlapping bins of the same size and plots the counts of number of values that fall in that interval.
+
+Every continuous distribution has a cumulative distribution function (CDF).
+The CDF defines the proportion of the data below a given value  a  for all values of  a :
+
+F(a)=Pr(x≤a)
+
+Any continuous dataset has a CDF, not only normal distributions. 
+
+For datasets that are not normal, the CDF can be calculated manually by defining a function to compute the probability above.
+
+a <- seq(min(my_data), max(my_data), length = 100)    # define range of values spanning the dataset
+cdf_function <- function(x) {    # computes prob. for a single value
+    mean(my_data <= x)
+}
+cdf_values <- sapply(a, cdf_function)
+plot(a, cdf_values)
+
+The CDF defines that proportion of data below a cutoff  a . To define the proportion of values above  a , we compute:
+
+1−F(a) 
+
+Note that the CDF can help compute probabilities.
+
+The probability of observing a randomly chosen value between  a  and  b  is equal to the proportion of values between  a  and  b , which we compute with the CDF.
+
+Smooth Density Plots:
+=====================
+Smooth density plots can be thought of as histograms where the bin width is extremely or infinitely small.
+The degree of smoothness can be controlled by an argument in the plotting function. (We will learn functions for plotting later.)
+While the histogram is an assumption-free summary, the smooth density plot is shaped by assumptions and choices you make as a data analyst.
+The y-axis is scaled so that the area under the density curve sums to 1. This means that interpreting values on the y-axis is not straightforward. To determine the proportion of data in between two values, compute the area under the smooth density curve in the region between those values.
+
+An advantage of smooth densities over histograms is that densities are easier to compare visually.
+Note that the choice of binwidth has a determinative effect on shape. There is no "correct" choice for binwidth, and you can sometimes gain insights into the data by experimenting with binwidths.
+
+
+Normal Distrubution:
+====================
+The normal distribution:
+1. is centered around one value, the mean
+2. is symmetric around the mean
+3. is defined completely by its mean ( μ ) and standard deviation (  σ  )
+
+library(tidyverse)
+library(dslabs)
+data(heights)
+index <- heights$sex=="Male"
+x <- heights$height[index]
+
+# calculate the mean and standard deviation manually
+average <- sum(x)/length(x)
+SD <- sqrt(sum((x - average)^2)/length(x))
+
+# calculate standard units
+z <- scale(x)
+
+# calculate proportion of values within 2 SD of mean
+mean(abs(z) < 2)
+Note about the sd function
+
+The built-in R function sd() calculates the standard deviation, but it divides by length(x)-1 instead of length(x).
+When the length of the list is large, this difference is negligible and you can use the built-in sd() function.
+Otherwise, you should compute  σ  by hand. For this course series, assume that you should use the sd() function unless you are told not to do so.
+
+
+
