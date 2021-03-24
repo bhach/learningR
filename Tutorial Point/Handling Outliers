@@ -1,0 +1,81 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Outliers:
+=========
+Data scientists often run into datasets that contain values that well outside of the norm.
+These outliers can present special challenges for data analysis and it's important to understand what they mean when they're present in your datasets.
+
+Outliers are data points that lie far outside the norm, and they may occur in two cases.
+1. Outliers may indicate some type of error in the dataset. Someone may have measured the data incorrectly in the first place, incorrectly input it into a system, or performed a calculation improperly.
+
+For example, imagine that you're looking at a dataset consisting of temperatures from weather stations in New York and find that there is a single data point recording a temperature of 212 degrees Fahrenheit.
+This is clearly some type of error. Perhaps the thermometer failed, maybe somebody wrote down the temperature incorrectly, or it could be that the thermometer was misplaced inside of an oven.
+Whatever the cause, this is clearly an invalid data point for outdoor temperatures.
+
+Outliers that are the result of error should be identified and removed from the dataset.
+
+2. Not all outliers are errors, however. They may be real data points that result from a skewed dataset.
+
+For example, imagine that you have a dataset consisting of the salaries of corporate executives.
+You might find that most have salaries in the hundreds of thousands of dollars, but then a single data point of $1.
+After investigating, you might discover that a corporate CEO agreed to take a $1 salary due to the company's poor performance the prior year.
+That's a correct data point and it should likely be retained in the dataset.
+We can use a variety of visual tools to identify outliers.
+You already saw how we can use a scatterplot to identify outliers with the temperature data.
+
+3. Outliers if present in large number may lead another group.
+
+
+Tools used for Outler detection:
+================================
+1. Histograms: It's basically a bar chart that works across continuous variables instead of categorical variables.
+2. Boxplot
+
+When you encounter outliers in your dataset, your first step should be to investigate them in greater detail.
+Look at the specific data points that are outliers and try to figure out what's going on.
+You might find that the data points are correct and depending on the analytic technique that you're using, it might be appropriate to leave them in the data set.
+
+Treatment for Outliers:
+=======================
+1. Remove Row: Remove the entire record from the dataset
+2. Remove value: Replace the outlier value with NA
+2. Correct Value: Replace the outlier value with correct value obtained from other sources
+
+
+Techniques for replacement of Outliers:
+=======================================
+1. Imputation: replace with median, median and mode
+2. Capping: set a maximum and minimum value for dataset and replace outliers with those values.
+3. Prediction: Replace the outlier values with predicted values by a model.
+
+
+Outliers in subgroups:
+======================
+In addition to straightforward outlier detection, you should also examine your data set for outliers that might appear in subsets of your data.
+Refer to the video
+
+testscores
+boxplot(test$grade ~ test$age)
+

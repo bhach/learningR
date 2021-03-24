@@ -1,0 +1,31 @@
+Handling Duplicate Data:
+========================
+
+Duplicated Rows:
+================
+Rule:duplicated rows are not necessarily incorrect
+
+It's not uncommon to find duplicated rows in a dataset.
+This is definitely a situation that requires further investigation when it occurs.
+
+There may be a perfectly valid reason to have the same row appear twice in your dataset.
+
+You shouldn't simply assume that any duplicated values are erroneous and need to be removed.
+
+The important thing to remember is that a dataset in R is not the same as a database table that follows the normal forms.
+While a database table should have a primary key that helps distinguish rows, there is no such requirement for a unique identifier in an R dataset.
+
+Treatment for Identical Rows:
+-----------------------------
+If the investigation determines that they really are unwanted duplicates, then you can proceed to get rid of them, and you have two options for removing them.
+if they truly are completely identical, you can use R's unique function to get rid of them.
+However, if the rows are not 100% identical, the unique function won't remove them.
+You'll need to manually remove whichever row you believe is incorrect.
+
+unique()
+duplicated()
+distinct()
+
+Treatment for Overlapping Rows:
+-------------------------------
+Remove duplicates but not identical ones by filtering incorrect values.

@@ -1,0 +1,186 @@
+Missing Data:
+=============
+1. MCAR: Data that is missing completely at random
+2. MAR: Data that is missing at random
+3. MNAR: Data that is missing not at random
+
+
+MACR:
+-----
+Circumstances cause some data to be missing from your data set.
+No relationship between the missing data and circumstances.
+Very rare in real life.
+MACR data can be ignored.
+
+For example, imagine that you have a spreadsheet of results from a data collection effort and the rows in that spreadsheet are sorted according to a randomly generated identifier.
+If something happens to the spreadsheet and you lose the last 100 rows, that's a situation where the data is missing completely at random.
+The order of the rows was completely dependent upon a random variable, and the only thing that the rows had in common was that their random values were the 100 highest in the data set.
+
+MAR:
+----
+Some underlying circumstances that explain the way that data is missing.
+Those circumstances are explained by other variables in the data set.
+MAR can be usually ignored.
+
+MNAR:
+-----
+In these cases, we're once again missing some information, but the value of the mission variable is related to the reason that that variable is missing.
+
+Imagine, for example, that we're measuring blood pressure of individuals and we have a meter that is only able to measure blood pressure values up to 180.
+If there are individuals in our population with blood pressures over 180, those value will be missing because they were too high to read.
+Situations where data is missing not at random are very serious because the absence of the missing data will impact your conclusions.
+
+Sources of Missing Data:
+------------------------
+1. Refusal to provide
+2. Inapplicable data element
+3. Data not yet collected.
+
+
+
+ASK THIS QUESTION: Is this value missing becuase it wasn't recorded or becuase it dosen't exist?
+
+If a value is missing becuase it doens't exist (like the height of the oldest child of someone who doesn't have any children) then it doesn't make sense to try and guess what it might be. These values you probalby do want to keep as NaN.
+
+On the other hand, if a value is missing becuase it wasn't recorded, then you can try to guess what it might have been based on the other values in that column and row. (This is called "imputation" and we'll learn how to do it next! :)
+
+If you're in a hurry or don't have a reason to figure out why your values are missing, one option you have is to just remove any rows or columns that contain missing values. (Note: I don't generally recommend this approch for important projects! It's usually worth it to take the time to go through your data and really look at all the columns with missing values one-by-one to really get to know your dataset.)
+
+
+Note:
+-----
+Missing Data occurs while converting the formats/units. For example, sometimes numbers are stored as text. While converting, it may lead to NAs.
+Units, Currencies, Spelling Mistakes needs to be checked.
+Look at summary statistics always
+Look at sample rows of data: sample_n(data,5)
+Always check percentage of missing data in column wise, rowwise and in total. Check this before and after handling missing data.
+
+Identifying Missing Data (columnwise):
+--------------------------------------
+1. sapply(mtcars, function(x) sum(is.na(x)))
+
+2. mtcars %>%
+  select(everything()) %>%  # replace to your needs
+  summarise_all(funs(sum(is.na(.))))
+
+3. apply(nfl_data,MARGIN=2,FUN=function(x){sum(is.na(x))})
+
+
+
+Identifying Missing Data (rowwise):
+------------------------------------
+mtcars %>%
+  rowwise %>%
+  summarise(NA_per_row = sum(is.na(.)))
+  
+  
+  
+select cases where atleast one NA in a row:
+-------------------------------------------
+myDT <- DT[!complete.cases(V1,V2), ]
+V1,V2 are col names in DT
+
+
+
+Identifying Missing Values:
+---------------------------
+There charcters in the column of numeric values
+There can be symbols like ""," ",".", etc....
+data coercion will not happen sometimes due to this reason as multiple data types present in single columns.
+
+missing values are generally easy to detect. We can simply look for NA values or unusual flags in a file.
+
+Some values are invalid. Find those and treat them as missing values.
+For example, in the column of Age, if th value is -12. Its an invalid value.
+
+sapply(dat, function(x) sum(is.na(x)))
+
+
+Treatments for Missing Data:
+----------------------------
+1. Figure: use other sources to recontruct the missing data
+2. Interpolate: use inferences in other data points to reconstruct the missing data.
+3. Ignore:continue without using the missing data.
+
+
+Treatment for Missing rows (by Imputation):
+-----------------------------------------
+Rows may be missing completely at random, missing at random, or missing not at random.
+Missing rows are usually much more difficult to detect because there's no row there to analyze.
+Detecting missing rows generally requires some additional subject matter knowledge. 
+
+For example, if we know that there is supposed to be a row in a data set for every year and we have rows for 1990 through 2016 and then another row for 2018, it's logical to conclude that 2017 is missing.
+
+
+Treatment for Missing rows (by deletion):
+-----------------------------------------
+If you have large number of observations in your dataset, where all the classes to be predicted are sufficiently represented in the training data and the model doesn’t lose power.
+Try deleting (or not to include missing values while model building)
+
+newdata <- select(msleep, genus, vore, conservation)
+newdata <- na.omit(newdata)
+
+na.omit and drop_na would be useful here.
+
+delete columns with X% of missing data
+
+
+
+Treatment for Missings columns (by deletion):
+---------------------------------------------
+If a paricular variable is having more missing values that rest of the variables in the dataset, and, if by removing that one variable you can save many observations, then you are better off without that variable unless it is a really important predictor that makes a lot of business sense.
+It is a matter of deciding between the importance of the variable and losing out on a number of observations.
+
+Here,we delete variables (columns) that contain too many missing values.
+
+#Find the proportion of missing data
+pctmiss <- colSums(is.na(msleep))/nrow(msleep)
+
+Sixty-one percent of the sleep_cycle values are missing. You may decide to drop it.
+
+dat <- na.omit(dat)
+
+Treatment using Aggregate functions:
+------------------------------------
+mean()
+median()
+mode()
+min()
+max()
+count()
+
+Treatment using Prediction:
+---------------------------
+1. kNN:
+=======
+uses k-Nearest Neighbours approach to impute missing values.
+
+What kNN imputation does in simpler terms is as follows:
+For every observation to be imputed, it identifies ‘k’ closest observations based on the euclidean distance and computes the weighted average (weighted based on distance) of these ‘k’ obs.
+
+The advantage is that you could impute all the missing values in all variables with one call to the function. It takes the whole data frame as the argument and you don’t even have to specify which variabe you want to impute. 
+
+
+2. rpart:
+=========
+The limitation with DMwR::knnImputation is that it sometimes may not be appropriate to use when the missing value comes from a factor variable.
+Both rpart and mice has flexibility to handle that scenario. The advantage with rpart is that you just need only one of the variables to be non NA in the predictor fields.
+
+3. mice:
+========
+mice short for Multivariate Imputation by Chained Equations is an R package that provides advanced features for missing value treatment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

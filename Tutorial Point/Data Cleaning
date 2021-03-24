@@ -1,57 +1,7 @@
-https://rstudio-pubs-static.s3.amazonaws.com/415060_553527fd13ed4f30aae0f1e4483aa970.html
-
-
-Data Cleaning:
+Cleaning Data:
 ==============
-
-Detecting Outliers:
--------------------
-Outliers are data points distant from others.
-They may indicate an error in the dataset or form a new pattern.
-
-
-Missing data:
-=============
-Real data are likely to contain missing values.
-There are three basic approaches to dealing with missing data.
-1. feature selection
-2. listwise deletion
-3. imputation
-Let’s see how each applies to the msleep dataset from the ggplot2 package.
-The msleep dataset describes the sleep habits of mammals and contains missing values on several variables.
-
-1. Feature selection:
-----------------------
-In feature selection, you delete variables (columns) that contain too many missing values.
-
-#Find the proportion of missing data
-pctmiss <- colSums(is.na(msleep))/nrow(msleep)
-
-Sixty-one percent of the sleep_cycle values are missing. You may decide to drop it.
-
-2. Listwise selection:
-----------------------
-Listwise deletion involves deleting observations (rows) that contain missing values on any of the variables of interest.
-
-newdata <- select(msleep, genus, vore, conservation)
-newdata <- na.omit(newdata)
-
-3. Imputation:
---------------
-Imputation involves replacing missing values with “reasonable” guesses about what the values would have been if they had not been missing.
-There are several approaches, as detailed in such packages as VIM, mice, Amelia and missForest.
-Here we will use the kNN function from the VIM package to replace missing values with imputed values.
-
-# Impute missing values using the 5 nearest neighbors
-library(VIM)
-newdata <- kNN(msleep, k=5)
-
-Basically, for each case with a missing value, the k most similar cases not having a missing value are selected.
-If the missing value is numeric, the mean of those k cases is used as the imputed value.
-If the missing value is categorical, the most frequent value from the k cases is used.
-The process iterates over cases and variables until the results converge (become stable).
-This is a bit of an oversimplification - see Imputation with R Package VIM for the actual details.
-
-Important caveate: Missing values can bias the results of studies (sometimes severely).
-If you have a significant amount of missing data, it is probably a good idea to consult a statistician or data scientist before deleting cases or imputing missing values.
-
+1. Missing Data
+2. Dupicated Data
+3. Formatting Data
+4. Outliers
+5. Tidy Data

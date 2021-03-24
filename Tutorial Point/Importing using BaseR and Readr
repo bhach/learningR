@@ -32,7 +32,9 @@ read.csv("fullpath of csv file/URL")
 ->Reading a CSV File Separated by ";":
 wines <- read.csv("c:/Users/Sreenu/Desktop/MLDataSets/winequality-red.csv",sep=";")
 
-
+read.table():
+=============
+vocabulary <- read.table("http://socserv.socsci.mcmaster.ca/jfox/Books/Applied-Regression-2E/datasets/Vocabulary.txt", header=T)
 
 How to Import EXCEL:
 --------------------
@@ -89,6 +91,11 @@ download.file(url,tmp_filename)
 dat<-read_csv(tmp_filename)
 file.remove(tmp_filename)
 
+Mention the data types of cols while importing:
+-----------------------------------------------
+change datatypes while impoting
+types<-"cicccinn"
+read_csv(data,skip=1,colnames=names,coltypes=types)
 
 read_tsv():
 -----------
