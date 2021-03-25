@@ -47,3 +47,13 @@ get_recipe("http://www.foodnetwork.com/recipes/food-network-kitchen/pancakes-rec
 
 There are several other powerful tools provided by rvest. For example, the functions html_form(), set_values(), and submit_form() permit you to query a webpage from R. This is a more advanced topic not covered here.
 
+
+
+From JSON:
+==========
+library(jsonlite)
+res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
+citi_bike <- fromJSON("http://citibikenyc.com/stations/json")
+
+citi_bike$stationBeanList %>% as_tibble() 
+
