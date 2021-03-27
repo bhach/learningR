@@ -5,3 +5,15 @@ Cleaning Data:
 3. Formatting Data
 4. Outliers
 5. Tidy Data
+6. Clearing Invalid Values
+
+
+number are stored as texts.
+need to be formatted
+currencies etc
+
+Check for spelling mistakes
+
+Invalid Values:
+----------------
+for example, in age u have -12 etc..

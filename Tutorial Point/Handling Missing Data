@@ -171,7 +171,61 @@ Both rpart and mice has flexibility to handle that scenario. The advantage with 
 mice short for Multivariate Imputation by Chained Equations is an R package that provides advanced features for missing value treatment.
 
 
+look at the summary statistics always
 
+sample_n(nfl_data,5)   # sample 5 rows
+
+
+functins to find missing values:
+sapply(mtcars, function(x) sum(is.na(x)))
+or
+mtcars %>%
+  select(everything()) %>%  # replace to your needs
+  summarise_all(funs(sum(is.na(.))))
+or
+apply(nfl_data,MARGIN=2,FUN=function(x){sum(is.na(x))})
+
+
+Finding NAs rowwise:
+mtcars %>%
+  rowwise %>%
+  summarise(NA_per_row = sum(is.na(.)))
+
+
+nfl_data<-read_csv("../input/nflplaybyplay2009to2016/NFL Play by Play 2009-2017 (v4).csv")
+permits_data <- read_csv("../input/building-permit-applications-data/Building_Permits.csv")
+
+
+
+nfl_missing <- sapply(nfl_data, function(x) {sum(is.na(x))})
+nfl_missing
+
+
+nfl_missing<-as.data.frame(nfl_missing)
+col_names <- rownames(nfl_missing)
+nfl_missing[,2] <- nfl_missing*100 / nrow(nfl_data)
+nfl_missing
+
+ASK THIS QUESTION: Is this value missing becuase it wasn't recorded or becuase it dosen't exist?
+
+If a value is missing becuase it doens't exist (like the height of the oldest child of someone who doesn't have any children) then it doesn't make sense to try and guess what it might be. These values you probalby do want to keep as NaN.
+
+On the other hand, if a value is missing becuase it wasn't recorded, then you can try to guess what it might have been based on the other values in that column and row. (This is called "imputation" and we'll learn how to do it next! :)
+
+If you're in a hurry or don't have a reason to figure out why your values are missing, one option you have is to just remove any rows or columns that contain missing values. (Note: I don't generally recommend this approch for important projects! It's usually worth it to take the time to go through your data and really look at all the columns with missing values one-by-one to really get to know your dataset.)
+
+# just how much data did we lose?
+
+
+na.omit
+drop_na
+
+delete columns with X% of missing data
+
+
+select cases where atleast one NA:
+myDT <- DT[!complete.cases(V1,V2), ]
+V1,V2 are col names in DT
 
 
 

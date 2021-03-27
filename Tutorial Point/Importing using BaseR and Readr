@@ -76,6 +76,9 @@ read_excel   #autodetect the format-xlsx/xls
 read_xls     #orginal format-xls
 read_xlsx    #new format-xlsx
 
+change datatypes while impoting
+types<-"cicccinn"
+read_csv(data,skip=1,colnames=names,coltypes=types)
 
 How to import from a url/directory:
 -----------------------------------
