@@ -1,104 +1,89 @@
-Importing Data:
-===============
+**Importing Data**
+==================
 
-getwd()       #current working directory
-setwd("new path")       #setting new directory as working directory
+This can be done using Base R or Tidyverse package
 
-For importing from Github, paste the raw code in place of url.
+Before importing, set your working directory
+#current working directory
+getwd()       
+
+#setting new directory as working directory
+setwd("new path")       
 
 
-How to Import a data using Base R:
-=================================
+Using BASE R:
+=============
 BaseR imports files as dataframe but not tibble.
 BaseR converts categorical characters as factors instead of characters.
 
-read.csv()
-read.table()
-
-
-How to Import CSV:
-------------------
+read.csv():
+-----------
 In CSV, by default, the delimitter is ","
-Parameters: file, header, sep, quote, dec, fill, comment.char
-Add the file in your current working directory
 
-
-->From Current Working Directory:
+From Current Working Directory:
 read.csv("file.csv",sep=",",stringsAsFactors=T)
 
-->From Any Other Directory/URL:
+From Any Other Directory/URL:
 read.csv("fullpath of csv file/URL")
 
-->Reading a CSV File Separated by ";":
+Reading a CSV File Separated by ";":
 wines <- read.csv("c:/Users/Sreenu/Desktop/MLDataSets/winequality-red.csv",sep=";")
 
+For importing from Github, paste the raw code in place of url.
+
 read.table():
-=============
+-------------
 vocabulary <- read.table("http://socserv.socsci.mcmaster.ca/jfox/Books/Applied-Regression-2E/datasets/Vocabulary.txt", header=T)
 
-How to Import EXCEL:
---------------------
+read.xlsx() or read.xlsx2():
+----------------------------
 R can read and write the excel files using xlsx package.
 read.xlsx() and read.xlsx2 functions are used to import the excel files.
 read.xlsx2 is faster on big files compared to read.xlsx function.
 
-
 install.packages("xlsx")
 library("xlsx")
 
-
-->withtout Sheet Index:
+withtout Sheet Index:
 emp <- read.xlsx("c:/Users/Sreenu/Desktop/MLDataSets/emp10.xlsx")	#Error
 
-
-->with sheet Index:
+with sheet Index:
 emp <- read.xlsx("c:/Users/Sreenu/Desktop/MLDataSets/emp10.xlsx", sheetIndex = 1)
 
 
+Using TIDYVERSE:
+================
 
-How to Import Data using readr:
-===============================
-
+readr():
+--------
 install.packages(readr)
 
-Readr:
-======
 read_table   #white space seperated values-txt
 read_csv     #comma seperated values-csv
 read_csv2    #semiclon seperated values-csv
 read_tsv     #tab delimiited seperated values-tsv
 read_delim   $general text file, must define delimitter-txt
 
-
-Readxl:
-======
+readxl():
+---------
 read_excel   #autodetect the format-xlsx/xls
 read_xls     #orginal format-xls
 read_xlsx    #new format-xlsx
 
-change datatypes while impoting
-types<-"cicccinn"
-read_csv(data,skip=1,colnames=names,coltypes=types)
-
-How to import from a url/directory:
------------------------------------
+#import from url
 url <- "https://raw.githubusercontent.com/rafalab/dslabs/master/inst/extdata/murders.csv"
 dat <- read_csv(url)
 download.file(url, "murders.csv")      #use this line code to download a local copy
 
+#change datatypes while importing
+types<-"cicccinn"
+read_csv(data,skip=1,colnames=names,coltypes=types)
 
-creating a temporary file and load into an object and erase the file keeping the object:
-----------------------------------------------------------------------------------------
+#importing into temp file and deleting it
 tmp_filename <- tempfile()
 download.file(url,tmp_filename)
 dat<-read_csv(tmp_filename)
 file.remove(tmp_filename)
-
-Mention the data types of cols while importing:
------------------------------------------------
-change datatypes while impoting
-types<-"cicccinn"
-read_csv(data,skip=1,colnames=names,coltypes=types)
 
 read_tsv():
 -----------
@@ -108,11 +93,14 @@ read_delim():
 -------------
 a<-read_delim(file="http://594442.youcanlearnit.net/drugdeaths.txt",delim="^")
 
+library(readr)
+legal <- read_delim("legal.csv", ";", escape_double = FALSE, 
+    col_names = FALSE, trim_ws = TRUE)
+
 Reading CSV with delim function: use delim as ,
 
 read_fwf():
 -----------
-Reading fixed width files
 names<-c("Name","Title","Department","Salary")
 lengths<-c(32,50,24,NA)
 
@@ -120,8 +108,8 @@ widths<-fwf_widths(lengths,names)
 employees<-read_fwf("http://594442.youcanlearnit.net/chicaoemployess.txt",widths)
 
 
-Data Extraction from XML:
-=========================
+Importing from XML:
+===================
 Extensible Markup Language (XML) is a file format which shares the data on the world wide web. 
 XML is similar to HTML it contains markup tags. 
 We can extract XML files using the "XML" package.
@@ -129,10 +117,9 @@ We can extract XML files using the "XML" package.
 install.packages("XML")
 library(XML)
 
-
 Reading XML File:
 -----------------
-emp_xml <- xmlParse("C:/Users/Sreenu/Desktop/MLDataSets/emp10.xml")
+emp_xml <- xmlParse("./xmlsample.xml")
 print(emp_xml)
 
 # Exract the root node form the xml file.
@@ -162,8 +149,8 @@ We have to use xmlToDataFrame() function to convert into data frame.
 emp_df <- xmlToDataFrame("C:/Users/Sreenu/Desktop/MLDataSets/emp10.xml")
 
 
-Data Extraction from JSON:
-==========================
+Import from JSON:
+=================
 JavaScript Object Notation files can read by using the rjson package.
 
 install.packages("rjson")
@@ -180,21 +167,180 @@ For data analysis it is better to convert the JSON file to a data frame.
 We have to use as.data.frame() function to convert into data frame.
 b <- as.data.frame(a)
 
+JSON file url:
+--------------
+library(jsonlite)
+res <- fromJSON('http://ergast.com/api/f1/2004/1/results.json')
+citi_bike <- fromJSON("http://citibikenyc.com/stations/json")
 
-How to Import a data from PDF:
-==============================
+citi_bike$stationBeanList %>% as_tibble() 
+
+Import from PDF:
+================
 1. Add your pdf in the directory
 2. Install and load pdftools and tidyverse
 3. Add your pdf into your project
+
 PDF <- pdf_text("oregon_grass_and_legume_seed_crops_preliminary_estimates_2017.pdf") %>%
   readr::read_lines()
   
+install.packages("pdftools")
+library(pdftools)
+download.file("http://arxiv.org/pdf/1403.2805.pdf", "1403.2805.pdf", mode = "wb")
+txt <- pdf_text("1403.2805.pdf")
 
-Import Data from Databases using RODBC package:
------------------------------------------------
+# first page text
+cat(txt[1])
+
+# second page text
+cat(txt[2])
+
+
+Import from Databases:
+======================
+using RODBC package
+
+
+Webscraping:
+============
+
+Web scraping is extracting data from a website.
+The rvest web harvesting package includes functions to extract nodes of an HTML document: html_nodes() extracts all nodes of different types, and html_node() extracts the first node.
+html_table() converts an HTML table to a data frame.
+
+Books:
+XML and Web Technologies for Data Sciences with R 
+Automated Data Collection with R
+
+Import from webpage:
+====================
+library(rvest)
+url <- "https://en.wikipedia.org/wiki/Murder_in_the_United_States_by_state"
+h <- read_html(url)
+tab <- h %>% html_nodes("table")    #extracts all nodes of html
+tab <- tab[[2]]     # 2 is the table in that page. choose accordingly.
+tab <- tab %>% html_table
+
+Above process is same for all URLs. Now see tab and set the names
+tab
+tab <- tab %>% setNames(c("state", "population", "total", "murders", "gun_murders", "gun_ownership", "total_rate", "murder_rate", "gun_murder_rate"))
+head(tab)
+
+
+HTML elements are written with a start tag, an end tag, and with the content in between: <tagname>content</tagname>.
+The tags which typically contain the textual content we wish to scrape, and the tags we will leverage in the next two sections, include:
+
+<h1>, <h2>,…,<h6>: Largest heading, second largest heading, etc.
+<p>: Paragraph elements
+<ul>: Unordered bulleted list
+<ol>: Ordered list
+<li>: Individual List item
+<div>: Division or section
+<table>: Table
+
+Must Read: http://uc-r.github.io/scraping_HTML_text
+Must Read: http://pablobarbera.com/big-data-upf/html/01b-scraping-unstructured-data.html
+Must Read: https://smac-group.github.io/ds/section-web-scraping.html
+
+scraping_wiki <- read_html("https://www.globallegalchronicle.com/fusion-acquisition-corp-s-2-4-billion-merger-with-moneylion/")
+p_text <- scraping_wiki %>%
+        html_nodes("p") %>%
+        html_text()
+p_text[9]
+
+body_text <- scraping_wiki %>%
+        html_nodes("#site_container") %>% 
+        html_text()
+
+
+
+Import from local HTML files:
+=============================
+rawHTML <- paste(readLines("path"), collapse="\n")
+
+
+Multiple local html files: (Check)
+# generate vector of html files
+files <- c('/path/to/your/html/file1', '/path/to/your/html/file2')
+
+# readLines for each file and put them in a list
+lineList <- lapply(files, readLines)
+
+# create a character vector that contains all lines from all files
+lineVector <- unlist(lineList)
+
+# collapse the character vector into a single string
+html <- paste(lineVector , collapse = '\n')
+
+# print the string with original formatting
+cat(html) 
+
+
+Import from CSS Page:
+=====================
+use selectorGadget to identify the css code
+https://selectorgadget.com/
+
+h <- read_html("http://www.foodnetwork.com/recipes/alton-brown/guacamole-recipe-1940609")
+recipe <- h %>% html_node(".o-AssetTitle__a-HeadlineText") %>% html_text()
+prep_time <- h %>% html_node(".m-RecipeInfo__a-Description--Total") %>% html_text()
+ingredients <- h %>% html_nodes(".o-Ingredients__a-Ingredient") %>% html_text()
+
+guacamole <- list(recipe, prep_time, ingredients)
+guacamole
+
+Since recipe pages from this website follow this general layout, we can use this code to create a function that extracts this information:
+get_recipe <- function(url){
+    h <- read_html(url)
+    recipe <- h %>% html_node(".o-AssetTitle__a-HeadlineText") %>% html_text()
+    prep_time <- h %>% html_node(".m-RecipeInfo__a-Description--Total") %>% html_text()
+    ingredients <- h %>% html_nodes(".o-Ingredients__a-Ingredient") %>% html_text()
+    return(list(recipe = recipe, prep_time = prep_time, ingredients = ingredients))
+} 
+
+and then use it on any of their webpages:
+get_recipe("http://www.foodnetwork.com/recipes/food-network-kitchen/pancakes-recipe-1913844")
+
+There are several other powerful tools provided by rvest.
+For example, the functions html_form(), set_values(), and submit_form() permit you to query a webpage from R.
+This is a more advanced topic not covered here.
+
+
 
 Import Data from APIs:
-----------------------
+======================
+install.packages(c("httr", "jsonlite"))
 
+library(httr)
+library(jsonlite)
 
+For our purposes, we’ll just be asking for data, which corresponds to a GET request.
+Other types of requests are POST and PUT, but we won’t need to worry about them for the purposes of this data-science-focused R API tutorial.
+
+For our example, we’ll be working with the Open Notify API, which opens up data on various NASA projects.
+Using the Open Notify API, we can learn about the location of the International Space Station and how many people are currently in space.
+
+res = GET("http://api.open-notify.org/astros.json")
+
+Investigating the res variable gives us a summary look at the resulting response.
+The first thing to notice is that it contains the URL that the GET request was sent to.
+We can also see the date and time that the request was made, as well as the size of the response.
+
+The content type gives us an idea of what form the data takes.
+This particular response says that the data takes on a json format, which gives a hint about why we need the jsonlite library.
+
+"Status" refers to the success or failure of the API request, and it comes in the form of a number.
+The number returned tells you whether or not the request was a success and can also detail some reasons why it might have failed.
+The number 200 is what we want to see; it corresponds to a successful request, and that’s what we have here.
+
+data = fromJSON(rawToChar(res$content))
+
+Let's use this API to find out when the ISS will be passing over the Brooklyn Bridge (which is at roughly latitude 40.7, longitude: -74):
+
+res = GET(“http://api.open-notify.org/iss-pass.json",
+    query = list(lat = 40.7, lon = -74))
+data = fromJSON(rawToChar(res$content))
+data$response
+
+This API returns times to us in the form of Unix time. Unix time is just the amount of time that has passed since January 1st, 1970. 
 

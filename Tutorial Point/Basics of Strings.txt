@@ -1,24 +1,24 @@
-Strings:
-========
---> A string can be created using single quotes or double quotes.
---> Internally R stores every string within double quotes, even when we create them with single quote.
---> The class of an object that holds character strings is ?character?.
---> print() and cat() functions are the most basic to use for strings.
+Basics of Strings:
+==================
+A string can be created using single quotes or double quotes.
+Internally R stores every string within double quotes, even when we create them with single quote.
+The class of an object that holds character strings is ?character?.
+print() and cat() functions are the most basic to use for strings.
+
 
 print vs cat:
-============
+-------------
 print takes one single arguement where as cat takes multiple arguements. Default space is the delimitter while using cat.
 class of print is a sting and class of cat is NULL.
 
 
 Getting to next line:
-=====================
+---------------------
 cat(c("hello", "world", "\n"))	#hello world
 
 
-
 Valid and Invalid strings:
-==========================
+--------------------------
 chr <- 'this is a string'
 chr <- "this is a string"
  
@@ -30,20 +30,13 @@ chr <- 'this is 'not' valid'
 
 
 Empty Strings:
-==============
+--------------
 empty_str <- ""
 empty_chr <- character(0)
 class(empty_str)	#character
 class(empty_chr)	#character
 length(empty_str)	#1
 length(empty_chr)	#0
-
-
-# create char vector of 2 elements
-chr_vector <- character(2) 
-chr_vector[3] <- "Three"
-# since it is not consecutive, it will automatically take NA in 4th position.
-chr_vector[5] <- "Five"
 
 
 
@@ -59,9 +52,8 @@ Some of the string manipulation functions which belongs to base package are
 6. nchar()
 
 paste():
-========
+--------
 It is used to concatenating (combine) the strings.
-
 
 a <- "Heartly"
 b <- 'Welcome to'
@@ -70,26 +62,17 @@ paste(a,b,c)
 paste(a,b,c, sep = "$")
 paste(a,b,c, sep = "", collapse = "")
 
-#Import Textdata.xlsx
-attach(Textdata)
-paste(name,surname)
-
 whales <- c("C","D","C","D","D")
 quails <- c("D","D","D","D","D")
 paste(whales, quails, sep = '', collapse = ' ')
 paste(whales, quails, collapse = '', sep = '')
 
-paste(c("A", "S", "D", "F"), c("W", "X", "Y", "Z"))
-paste(c("A", "S", "D", "F"), c("W", "X", "Y", "Z"), collapse = '')
-
-Practice above codes and for better understanding of sep and collapse arguements of paste function, refer: https://stackoverflow.com/questions/18475202/paste-collapse-in-r/57244748#57244748
-
+Refer: https://stackoverflow.com/questions/18475202/paste-collapse-in-r/57244748#57244748
 
 
 format():
-=========
+---------
 It is used to formatting the numbers and strings to a specific style.
-
 
 # Total number of digits displayed. Last digit rounded off.
 format(10.123456789, digits = 9)
@@ -113,37 +96,30 @@ format("DataHills", width = 20, justify = "l")
 format("DataHills", width = 20, justify = "c")
 
 
-
-
 toupper():
-==========
+----------
 It is used to convert the characters of a string into upper case.
 
 toupper("Welcome to DataHills")		#"WELCOME TO DATAHILLS"
 
 
-
 tolower():
-==========
+----------
 It is used to convert the characters of a string into lower case.
 
 tolower("Welcome to DataHills")		#"welcome to datahills"
 
 
-
 substring():
-============
+------------
 It is used to extracts the part of a string.
 
 substring("DataHills", 5, 9)		#"Hills"
 
 
-
 nchar():
-========
+--------
 It is used to count the number of characters including spaces in a string.
 
 nchar("Welcome to DataHills")	#20
 nchar(9292005440)		#10
-
-
