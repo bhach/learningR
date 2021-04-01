@@ -1,0 +1,165 @@
+tidyr:
+======
+--> tidyr package is an evolution of reshape2 (2010-2014) and reshape (2005-2010) packages.
+--> It's designed specifically for data tidying (not general reshaping or aggregating) 
+--> tidyr is new package that makes it easy to “tidy” your data. 
+--> it’s easy to munge (with dplyr), visualise (with ggplot2 or ggvis) and model (modelling packages).
+
+Install and Load tidyr:
+install.packages("tidyr")
+library(tidyr)
+
+Translation b/w the terminology used in different places:
+tidyr		gather	spread
+====		======	======
+reshape(2)	melt	cast
+spreadsheets	unpivot	pivot
+databases	fold	unfold
+
+# I will use the mtcars dataset from the datasets library.
+head(mtcars)
+dim(mtcars)
+
+# Let us include the names of the cars in a column called car for easier manipulation.
+mtcars$car <- rownames(mtcars)
+
+
+gather():
+=========
+--> gather() function is used to converts wide data to longer format. 
+--> It is analogous to the melt function from reshape2.
+
+
+# We can replicate what melt does as follows:
+mtcarsNew <- mtcars %>% gather(attribute, value, -car)
+dim(mtcarsNew)
+head(mtcarsNew)
+tail(mtcarsNew)
+
+--> As we can see, it gathers all the columns except car and places their name and value into the attritube and value column respectively.
+--> The great thing about tidyr is that you can gather only certain columns and leave the others alone. 
+--> If we want to gather all the columns from mpg to gear and leave the carb and car columns as they are, we can do it as follows:
+
+mtcarsNew <- mtcars %>% gather(attribute, value, mpg:gear)
+dim(mtcarsNew)
+head(mtcarsNew)
+
+spread():
+=========
+--> spread() fucntion is used to converts long data to wider format. 
+--> It is analogous to the cast function from reshape2.
+
+syntax:
+spread(data, key, value, fill = NA, convert = FALSE, drop = TRUE)
+
+We can replicate what cast does as follows:
+
+mtcarsSpread <- mtcarsNew %>% spread(attribute, value)
+head(mtcarsSpread)
+
+
+Wide Format:
+1. Each row represents several observations.
+2. One of the varaibles is stored in the header
+
+Plotting tidy data is simple compared to wider data
+
+library(tidyverse)
+library(dslabs)
+data(gapminder)
+
+Wider Format:
+-------------
+import and inspect example of original Gapminder data in wide format
+path <- system.file("extdata", package="dslabs")
+filename <- file.path(path,  "fertility-two-countries-example.csv")
+wide_data <- read_csv(filename)
+select(wide_data, country, `1960`:`1967`)
+
+
+Creating Tidy Data:
+-------------------
+create and inspect a tidy data frame
+tidy_data <- gapminder %>% 
+  filter(country %in% c("South Korea", "Germany")) %>%
+  select(country, year, fertility)
+head(tidy_data)
+
+
+gather wide data to make new tidy data:
+--------------------------------------
+new_tidy_data <- wide_data %>%
+  gather(year, fertility, `1960`:`2015`)
+head(new_tidy_data)
+
+gather all columns except country:
+----------------------------------
+new_tidy_data <- wide_data %>%
+  gather(year, fertility, -country)
+
+IMP: gather treats column names as characters by default:
+---------------------------------------------------------
+class(tidy_data$year)
+class(new_tidy_data$year)
+
+convert gathered column names to numeric:
+-----------------------------------------
+Be careful while gathering columns into rows.
+
+new_tidy_data <- wide_data %>%
+  gather(year, fertility, -country, convert = TRUE)
+class(new_tidy_data$year)
+
+ggplot on converted tidy data:
+-------------------------------
+ggplot works on new tidy data
+new_tidy_data %>%
+  ggplot(aes(year, fertility, color = country)) +
+  geom_point()
+
+spread tidy data to generate wide data:
+---------------------------------------
+new_wide_data <- new_tidy_data %>% spread(year, fertility)
+select(new_wide_data, country, `1960`:`1967`)
+
+
+seperate values in a column:
+----------------------------
+import data
+path <- system.file("extdata", package = "dslabs")
+filename <- file.path(path, "life-expectancy-and-fertility-two-countries-example.csv")
+raw_dat <- read_csv(filename)
+select(raw_dat, 1:5)
+
+dat <- raw_dat %>% gather(key, value, -country)
+
+separate on underscores:
+------------------------
+dat %>% separate(key, c("year", "variable_name"), "_")
+
+split on all underscores, pad empty cells with NA:
+--------------------------------------------------
+dat %>% separate(key, c("year", "first_variable_name", "second_variable_name"), 
+                 fill = "right")
+
+split on first underscore but keep life_expectancy merged:
+----------------------------------------------------------
+dat %>% separate(key, c("year", "variable_name"), sep = "_", extra = "merge")
+
+separate then spread:
+---------------------
+dat %>% separate(key, c("year", "variable_name"), sep = "_", extra = "merge") %>%
+  spread(variable_name, value) 
+
+# separate then unite
+dat %>% 
+  separate(key, c("year", "first_variable_name", "second_variable_name"), fill = "right") %>%
+  unite(variable_name, first_variable_name, second_variable_name, sep="_")
+
+# full code for tidying data
+dat %>% 
+  separate(key, c("year", "first_variable_name", "second_variable_name"), fill = "right") %>%
+  unite(variable_name, first_variable_name, second_variable_name, sep="_") %>%
+  spread(variable_name, value) %>%
+  rename(fertility = fertility_NA)
+
