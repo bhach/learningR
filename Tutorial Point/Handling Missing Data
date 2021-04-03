@@ -228,6 +228,256 @@ myDT <- DT[!complete.cases(V1,V2), ]
 V1,V2 are col names in DT
 
 
+5 Powerful R Packages used for imputing missing values:
+=======================================================
+MICE
+Amelia
+missForest
+Hmisc
+mi
+
+
+https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/
+
+
+MICE Package:
+=============
+MICE (Multivariate Imputation via Chained Equations) is one of the commonly used package by R users.
+Creating multiple imputations as compared to a single imputation (such as mean) takes care of uncertainty in missing values.
+
+MICE assumes that the missing data are Missing at Random (MAR), which means that the probability that a value is missing depends only on observed value and can be predicted using them.
+It imputes data on a variable by variable basis by specifying an imputation model per variable.
+
+Suppose we have X1, X2….Xk variables. If X1 has missing values, then it will be regressed on other variables X2 to Xk.
+The missing values in X1 will be then replaced by predictive values obtained.
+
+Methods used by this package are:
+---------------------------------
+PMM (Predictive Mean Matching)  – For numeric variables
+logreg(Logistic Regression) – For Binary Variables( with 2 levels)
+polyreg(Bayesian polytomous regression) – For Factor Variables (>= 2 levels)
+Proportional odds model (ordered, >= 2 levels)
+
+
+Example1: IRIS
+--------------
+install.packages("missForest")
+library(missForest)
+#Generate 10% missing values at Random
+iris.mis <- prodNA(iris, noNA = 0.1)
+
+#remove categorical variables
+iris.mis <- subset(iris.mis, select = -c(Species))
+
+install.packages("VIM")
+library(VIM)
+mice_plot <- aggr(iris.mis, col=c('navyblue','yellow'),
+                    numbers=TRUE, sortVars=TRUE,
+                    labels=names(iris.mis), cex.axis=.7,
+                    gap=3, ylab=c("Missing data","Pattern"))
+
+imputed_Data <- mice(iris.mis, m=5, maxit = 50, method = 'pmm', seed = 500)
+
+#check imputed values
+imputed_Data$imp$Sepal.Width
+
+Since there are 5 imputed data sets, you can select any using complete() function.
+
+#get complete data ( 2nd out of 5)
+completeData <- complete(imputed_Data,2)
+
+if you wish to build models on all 5 datasets, you can do it in one go using with() command. You can also combine the result from these models and obtain a consolidated output using pool() command.
+
+#build predictive model
+fit <- with(data = iris.mis, exp = lm(Sepal.Width ~ Sepal.Length + Petal.Width)) 
+
+#combine results of all 5 models
+combine <- pool(fit)
+summary(combine)
+
+
+Example2: SLEEP
+---------------
+#Filling missing values in sleep
+md.pattern(sleep)
+
+# Imputing the values using mice
+imputed_sleep <- mice(sleep, m=5, method = 'pmm', seed = 101)
+
+# checking the summary
+summary(imputed_sleep)
+
+# Checking imputed values of sleep variable
+imputed_sleep$imp$Sleep
+
+# Get complete data with 3rd imputation
+wholeData <- complete(imputed_sleep,3)
+
+The predictorMatrix is an argument to the mice function.
+It specifies the target variable or block in the rows, and the predictor variables on the columns.
+An entry of 0 means that the column variable is NOT used to impute the row variable or block.
+A nonzero value indicates that it is used.
+
+# Building regression model
+model_fit <- with(data = imputed_sleep, exp = lm(BodyWgt ~ BrainWgt + Sleep)) 
+
+# combining results of all 5 models using pool() function
+pooled_output <- pool(model_fit)
+summary(pooled_output)
+
+#list of methods in mice
+methods(mice)
+
+a<-nhanes
+a$hyp <- as.factor(a$hyp)
+
+p<-mice(a,m=5,method=c("","pmm","logreg","pmm"),maxit=20)
+
+# list of 5 impuations values for bmi column
+p$imp$bmi
+
+
+Amelia Package:
+===============
+ultiple imputation helps to reduce bias and increase efficiency. 
+It is enabled with bootstrap based EMB algorithm which makes it faster and robust to impute many variables including cross sectional, time series data etc. 
+
+Assumptions:
+------------
+1. All variables in a data set have Multivariate Normal Distribution (MVN). It uses means and covariances to summarize data.
+2. Missing data is random in nature (Missing at Random).
+
+Methodology:
+------------
+It takes m bootstrap samples and applies EMB algorithm to each sample.
+The m estimates of mean and variances will be different.
+Finally, the first set of estimates are used to impute first set of missing values using regression, then second set of estimates are used for second set and so on.
+
+MICE vs Amelia:
+---------------
+MICE imputes data on variable by variable basis whereas MVN uses a joint modeling approach based on multivariate normal distribution.
+MICE is capable of handling different types of variables whereas the variables in MVN need to be normally distributed or transformed to approximate normality.
+MICE can manage imputation of variables defined on a subset of data whereas MVN cannot.
+
+This package works best when data has multivariable normal distribution. If not, transformation is to be done to bring data close to normality.
+
+The only thing that you need to be careful about is classifying variables. It has 3 parameters:
+idvars – keep all ID variables and other variables which you don’t want to impute
+noms – keep nominal variables here
+
+#specify columns and run amelia
+amelia_fit <- amelia(iris.mis, m=5, parallel = "multicore", noms = "Species")
+
+#access imputed outputs
+> amelia_fit$imputations[[1]]
+> amelia_fit$imputations[[2]]
+> amelia_fit$imputations[[3]]
+> amelia_fit$imputations[[4]]
+> amelia_fit$imputations[[5]]
+
+To check a particular column in a data set, use the following commands
+
+> amelia_fit$imputations[[5]]$Sepal.Length
+
+#export the outputs to csv files
+> write.amelia(amelia_fit, file.stem = "imputed_data_set")
+
+
+missForest Package:
+===================
+missForest is an implementation of random forest algorithm.
+It’s a non parametric imputation method applicable to various variable types.
+
+Non-parametric method does not make explicit assumptions about functional form of f (any arbitary function).
+Instead, it tries to estimate f such that it can be as close to the data points without seeming impractical.
+
+Methodology:
+------------
+In simple words, it builds a random forest model for each variable.
+Then it uses the model to predict missing values in the variable with the help of observed values.
+
+It yield OOB (out of bag) imputation error estimate.
+Moreover, it provides high level of control on imputation process.
+It has options to return OOB separately (for each variable) instead of aggregating over the whole data matrix.
+This helps to look more closely as to how accurately the model has imputed values for each variable.
+
+
+#impute missing values, using all parameters as default values
+> iris.imp <- missForest(iris.mis)
+
+#check imputed values
+> iris.imp$ximp
+
+#check imputation error
+> iris.imp$OOBerror
+
+NRMSE is normalized mean squared error. It is used to represent error derived from imputing continuous values.
+
+PFC (proportion of falsely classified) is used to represent error derived from imputing categorical values.
+
+#comparing actual data accuracy
+> iris.err <- mixError(iris.imp$ximp, iris.mis, iris)
+>iris.err
+
+This suggests that categorical variables are imputed with 6% error and continuous variables are imputed with 15% error.
+This can be improved by tuning the values of mtry and ntree parameter.
+mtry refers to the number of variables being randomly sampled at each split. ntree refers to number of trees to grow in the forest.
+
+
+
+
+
+
+
+
+nhanes
+sleep
+
+
+
+library(missForest)
+#Generate 10% missing values at Random
+iris.mis <- prodNA(iris, noNA = 0.1)
+
+
+
+
+Important functions:
+--------------------
+with
+pool
+within
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+insert random NAs into a datset:
+--------------------------------
+install.packages("missForest")
+#Generate 10% missing values at Random
+> iris.mis <- prodNA(iris, noNA = 0.1)
+
+
+do these checks also to find out any special values
+is.NaN()
+is.infinite()
+
+colSums(is.na(df))  - simle way to see number of NAs in each column
 
 
 

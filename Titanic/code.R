@@ -51,3 +51,25 @@ Sample model this is....
 Model depends on the cleaning..replacing with medians is a bad choice
 
 
+b<-full %>%
+  separate(Name,c("Title","Full_Name"),sep=", ",extra="merge")
+
+full<-full %>%
+  separate(Name,c("Title","Name"),sep=". ",extra="merge")
+
+# Titles with very low cell counts to be combined to "rare" level
+rare_title <- c('Dona', 'Lady', 'the Countess','Capt', 'Col', 'Don', 
+                'Dr', 'Major', 'Rev', 'Sir', 'Jonkheer')
+
+table(full$Sex, full$Title)
+
+# Also reassign mlle, ms, and mme accordingly
+full$Title[full$Title == 'Mlle']        <- 'Miss' 
+full$Title[full$Title == 'Ms']          <- 'Miss'
+full$Title[full$Title == 'Mme']         <- 'Mrs' 
+full$Title[full$Title %in% rare_title]  <- 'Rare Title'
+
+Master - Unmarried or young boys
+Mr. - Married men
+Miss. - unmarried or young girls
+Mrs. - Married women

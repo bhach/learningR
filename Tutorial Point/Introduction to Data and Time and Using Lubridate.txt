@@ -6,11 +6,12 @@ Sys.Date()          #current date
 Sys.time()          #current rime
 Sys.timezone()      #system timezone
 
-Anything in between " " is sting only but since we are as.date, the class is Date
+Anything in between " " is string only but since we are as.date, the class is Date
 x <- as.Date("2018-10-12")
 y<- "2018-10-12"
 #observe the class and type of x and y.
 
+YYYY-MM-DD is most accepted format called as ISO 8601 format.
 
 as.Date(c('2018-10-11', '2018-10-12'))
 
@@ -125,6 +126,7 @@ library(tidyverse)
 library(nycflights13) 
 library(lubridate)
 
+OslonNames() - list of timezones
 
 Creating datetime objects:
 ==========================
@@ -251,5 +253,3 @@ stTime + ddays(1)
 stTime + days(1)
 
 Note that R is very sensitive to Daylight Savings Time.  The duration function `ddays()` added the number of seconds in a typical day to the original date.  However, March 7, 2020 only had 23 hours due to the presence of Daylight Savings Time.   The difference with the period function `days()` is that it added the natural human day -- which, when we think of a day, will be the same hour of the following day despite Daylight Savings Time.
-
-
